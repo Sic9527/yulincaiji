@@ -53,7 +53,43 @@
 		mui.init();
 		(function($) {
 			if(app.checkUser()){
-				mui.post(base_url+"userDetail/usercenter?guid="+new Date().getTime(),{"id":app.getUser().userid},function(data){
+				function grzx(){
+					mui.ajax(base_url+"userDetail/usercenter?guid="+new Date().getTime(),{
+						dataType:'json',//服务器返回json格式数据
+						type:'post',//HTTP请求类型
+						timeout:10000,//超时时间设置为10秒
+						headers:{
+							'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
+							,'user_id_token':app.getUser().userid
+							,'urlName':"专项采集"
+						},
+						data:{
+							"id":app.getUser().userid
+						},
+						success:function(data){
+							if(data.code=='200'){
+							console.log(JSON.stringify(data));
+							data = data.data;
+							if(data.photoUrl != undefined && data.photoUrl!=''){
+								document.getElementById('head-img1').src = smallUploadPath + data.photoUrl ;
+							}
+							if(data.name == undefined || data.name == ''){
+								document.getElementById('name_val_d').innerHTML = '未填写' ;
+							}else{
+								document.getElementById('name_val_d').innerHTML = data.name ;
+							}
+							document.getElementById('account_val_d').innerHTML = data.idnumber ;
+							document.getElementById('idnumber_val').innerHTML = data.policenumber ;
+							/*setTimeout(function() {
+								initImgPreview();
+							}, 300);*/
+							}else{ 
+								mui.alert(data.message);
+							}
+						}
+					})
+				}
+				/*mui.post(base_url+"userDetail/usercenter?guid="+new Date().getTime(),{"id":app.getUser().userid},function(data){
 					if(data.code=='200'){
 						console.log(JSON.stringify(data));
 						data = data.data;
@@ -69,14 +105,13 @@
 						document.getElementById('idnumber_val').innerHTML = data.policenumber ;
 						/*setTimeout(function() {
 							initImgPreview();
-						}, 300);*/
+						}, 300);
 					}else{ 
 						mui.alert(data.message);
 					}
-				});
-				
+					
+				});*/
 			}
-			
 		})(mui);
 		
 		//退出登录
