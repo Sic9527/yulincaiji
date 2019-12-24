@@ -463,6 +463,7 @@ function findByCardIdPerson(idcardVal){
 			console.log(type);
 		}
 	});
+	
 	//测试完成后启用该地址
 	mui.ajax(base_url_pc+"phone/postgresql/finByIdcardPersonInfo?guid="+new Date().getTime(),{
 		headers:{
