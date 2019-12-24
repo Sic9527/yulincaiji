@@ -435,7 +435,7 @@ function findByCardIdPerson(idcardVal){
 	layer.closeAll();
 	var idcardVal = "610013197504230035";
 	//$('#header_img').attr('src',base_url_pc+"postgresql/images.xhtml?idCard="+idcardVal+"&guid="+new Date().getTime());
-	mui.ajax(base_url_pc+"postgresql/images",{
+	mui.ajax(base_url_pc+"phone/postgresql/images",{
 		headers:{
 			'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
 			,'user_id_token':app.getUser().userid		
@@ -464,7 +464,7 @@ function findByCardIdPerson(idcardVal){
 		}
 	});
 	//测试完成后启用该地址
-	mui.ajax(base_url_pc+"postgresql/finByIdcardPersonInfo?guid="+new Date().getTime(),{
+	mui.ajax(base_url_pc+"phone/postgresql/finByIdcardPersonInfo?guid="+new Date().getTime(),{
 		headers:{
 			'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
 			,'user_id_token':app.getUser().userid	
@@ -630,7 +630,7 @@ function carCplxdm(_attr){
 //	alert('_attr'+_attr)
 
 	if($.trim(_attr).length != 0) { 
-		mui.ajax(base_url_pc+"/postgresql/finByCarNumber?guid="+new Date().getTime(),{
+		mui.ajax(base_url_pc+"phone/postgresql/finByCarNumber?guid="+new Date().getTime(),{
 			headers:{
 				'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
 				,'user_id_token':app.getUser().userid	
@@ -1098,6 +1098,7 @@ function upload(obj){
 		var task = plus.uploader.createUpload(server,
 		{method:"POST"},
 		function(t,status){ //上传完成
+			
 			console.log('status:'+JSON.stringify(status));
 			if(status==200){
 				console.log("上传成功："+t.responseText);
