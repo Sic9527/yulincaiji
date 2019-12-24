@@ -318,7 +318,8 @@
 			//mui.ajax('js/test.json',{
 				headers:{
 					'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
-					,'user_id_token':app.getUser().userid				
+					,'user_id_token':app.getUser().userid
+					,'urlName':"同行同住字段获取"
 				},
 				dataType:'json',//服务器返回json格式数据
 				type:'get',//HTTP请求类型
@@ -583,7 +584,7 @@
 					headers:{
 						'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
 						,'user_id_token':app.getUser().userid	
-						,'urlName':"车辆核查"
+						,'urlName':"同行同住信息采集提交"
 					},
 					url:base_url+"/base/addMuti/"+self.tableName+'/'+self.relationTableName,
 					type:'post', 
@@ -641,10 +642,11 @@
 			layer.closeAll();
 			var idcardVal = idcardVal;
 			//$('#header_img').attr('src',base_url_pc+"postgresql/images.xhtml?idCard="+idcardVal+"&guid="+new Date().getTime());
-			mui.ajax(base_url_pc+"postgresql/images",{
+			mui.ajax(base_url_pc+"phone/postgresql/images",{
 				headers:{
 					'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
-					,'user_id_token':app.getUser().userid				
+					,'user_id_token':app.getUser().userid	
+					,'urlName':"同行同住身份证照片获取"
 				},
 				data:{
 					"idCard":idcardVal
@@ -672,7 +674,7 @@
 				headers:{
 					'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
 					,'user_id_token':app.getUser().userid	
-					,'urlName':"车辆核查"
+					,'urlName':"同行同住人员核查"
 				},
 				data:{
 					"idCard":idcardVal
@@ -853,7 +855,7 @@
 				}
 			});
 		}*/
-		//人口详细信息回填
+		/*//人口详细信息回填
 		function psersonDetalis(){
 			console.log('*********人口详细信息回填');
 			//重点人员核查findfugitive
@@ -863,11 +865,11 @@
 			if($.trim(idcardVal).length == 0) { 
 				$(this).focus();
 			}else{				
-				mui.ajax(base_url_pc+"/postgresql/finByIdcardPersonInfo?guid="+new Date().getTime(),{
+				mui.ajax(base_url_pc+"phone/postgresql/finByIdcardPersonInfo?guid="+new Date().getTime(),{
 					headers:{
 						'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
 						,'user_id_token':app.getUser().userid	
-						,'urlName':"车辆核查"
+						,'urlName':"同行同住人员核查"
 					},
 					data:{
 						"idCard":idcardVal
@@ -1009,7 +1011,7 @@
 					}
 				});
 			}
-		}
+		}*/
 		var waiting ;
 		var readyWriteData = false;
 		var readyRead = false;

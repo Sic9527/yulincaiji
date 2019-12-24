@@ -61,8 +61,45 @@
 <script type="text/javascript">
 	mui.init();
 	//排名接口
-	mui.post(base_url+"userDetail/rankinguser?guid="+new Date().getTime(),{
+	function cjlpm(){
+		mui.ajax(base_url+"userDetail/rankinguser?guid="+new Date().getTime(),{
+			dataType:'json',//服务器返回json格式数据
+			type:'post',//HTTP请求类型
+			timeout:10000,//超时时间设置为10秒
+			headers:{
+				'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
+				,'user_id_token':app.getUser().userid
+				,'urlName':"采集量排名"
+			},
+			data:{
+				"id":app.getUser().userid
+			},
+			success:function(data){
+				if(data.code=='200'){
+		//			console.log(JSON.stringify(data));
+					data = data.data;
+					document.getElementById('x_all_person').innerHTML = data.xq.xqrs;//全市人数
+					
+					document.getElementById('x_all_rank').innerHTML = data.xq.finalDays;
+					document.getElementById('x_qi_rank').innerHTML = data.xq.sevenDays;
+					
+					document.getElementById('q_all_person').innerHTML = data.qs.qsrs;//辖区人数
+					
+					document.getElementById('q_all_rank').innerHTML = data.qs.finalDays;
+					document.getElementById('q_qi_rank').innerHTML = data.qs.sevenDays;
+					/*setTimeout(function() {
+						initImgPreview();
+					}, 300);*/
+				}else{ 
+					mui.alert(data.message);
+				}
+			}
+		})
+	}
+	/*mui.post(base_url+"userDetail/rankinguser?guid="+new Date().getTime(),{
 		"id":app.getUser().userid
+		,'user_id_token':app.getUser().userid
+		,'urlName':"采集量排名"
 	},function(data){
 			console.log(JSON.stringify(data));
 		if(data.code=='200'){
@@ -79,9 +116,9 @@
 			document.getElementById('q_qi_rank').innerHTML = data.qs.sevenDays;
 			/*setTimeout(function() {
 				initImgPreview();
-			}, 300);*/
+			}, 300);
 		}else{ 
 			mui.alert(data.message);
 		}
-	});
+	});*/
 </script>
