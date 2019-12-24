@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/znsoft/!svn/ver/3379/yulincaiji/unpackage
+END
+.dependencies
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/znsoft/!svn/ver/3199/yulincaiji/unpackage/.dependencies
+END
+.confirmed_dependencies
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/znsoft/!svn/ver/3379/yulincaiji/unpackage/.confirmed_dependencies
+END

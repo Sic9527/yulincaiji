@@ -1,0 +1,80 @@
+{
+	"index.html": {
+		"resources": [
+			"car.html",
+			"js/main.js",
+			"js/applogin.js",
+			"js/index_data.js",
+			"images/toux.png",
+			"js/mui.picker.min.js",
+			"js/id_card_vail.js",
+			"js/layer_mobile/layer.js",
+			"js/common.js",
+			"js/verification.js",
+			"js/mui.min.js",
+			"css/app.css",
+			"js/watermark.js",
+			"js/template-web.js",
+			"css/mui.min.css",
+			"js/jquery-1.10.2.min.js",
+			"css/mui.picker.min.css",
+			"js/test.js",
+			"img/touxiang.png",
+			"js/index.js"
+		],
+		"refer": [
+			"car.html",
+			"person.html",
+			"zhuanxiang-list.html",
+			"bulu-list.html",
+			"cjpaiming.html",
+			"hcRecord.html",
+			"usercenter.html",
+			"flow-users.html",
+			"login.html"
+		]
+	},
+	"zhuanxiang-list.html": {
+		"refer": [
+			"template-user-base.html",
+			"form-data-list.html"
+		],
+		"resources": []
+	},
+	"form-data-list.html": {
+		"refer": [
+			"zhuanxiang-list.html"
+		],
+		"resources": []
+	},
+	"push-index.html": {
+		"refer": [
+			"bulu-list.html",
+			"push-list.html"
+		],
+		"resources": []
+	},
+	"bulu-list.html": {
+		"refer": [
+			"push-index.html"
+		],
+		"resources": []
+	},
+	"login.html": {
+		"refer": [
+			"index.html"
+		],
+		"resources": []
+	},
+	"push-list.html": {
+		"refer": [
+			"qu-table.html"
+		],
+		"resources": []
+	},
+	"tyrz.html": {
+		"refer": [
+			"index.html"
+		]
+	}
+}

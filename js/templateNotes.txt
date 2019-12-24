@@ -1,0 +1,28 @@
+/**
+ * _titleName：采集类型名称
+ * _groupList：模块组[Array]
+ * 
+ **** _groupText：模块名称
+ **** _fieldList：字段数组[Array]
+ * 
+ ******** _fieldName：字段名称
+ * 
+ ******** _type：控制页面显示元素类型，具体说明如下
+ ************ [inputText：普通文本]
+ ************ [inputNumber：数字]
+ ************ [inputNfc：NFC识别录入]
+ ************ [textarea：富文本]
+ ************ [dateInput：日期]
+ ************ [cinemaImg：zhaopian]
+ * 
+ ************ [_inputRadio：单选]
+ ******** _inputRadioValue：单选按钮组 [Array][value text]
+ * 
+ ************ [_inputCheckbox：复选]
+ ******** _inputCheckboxValue：复选框组值 [Array][value text]
+ * 
+ ************ [_selectOption：下拉选择][Array][value text]
+ ******** _optionValue：下拉选项值 [Array][value text]
+ * 
+ ************ [areaCinema：拍照]
+ */

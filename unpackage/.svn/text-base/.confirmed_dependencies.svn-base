@@ -1,0 +1,47 @@
+{
+	"index.html": {
+		"resources": [
+			"car.html"
+		],
+		"refer": [
+			"car.html",
+			"person.html",
+			"zhuanxiang-list.html",
+			"bulu-list.html",
+			"cjpaiming.html",
+			"hcRecord.html",
+			"usercenter.html",
+			"flow-users.html"
+		]
+	},
+	"zhuanxiang-list.html": {
+		"refer": [
+			"template-user-base.html",
+			"form-data-list.html"
+		],
+		"resources": []
+	},
+	"form-data-list.html": {
+		"refer": [
+			"zhuanxiang-list.html"
+		],
+		"resources": []
+	},
+	"push-index.html": {
+		"refer": [
+			"bulu-list.html"
+		],
+		"resources": []
+	},
+	"bulu-list.html": {
+		"refer": [
+			"push-index.html"
+		],
+		"resources": []
+	},
+	"login.html": {
+		"refer": [
+			"index.html"
+		]
+	}
+}

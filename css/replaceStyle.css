@@ -1,0 +1,107 @@
+	.head-img {position: absolute;right: 1.825rem;width: 2.225rem;height: 2.225rem;bottom: 0.525rem;}
+	.mui-scroll-wrapper-list{height: 4.025rem;left: 5%;top:0.625rem;width: 90%;}
+	.mui-scroll-list{width: auto;}
+	.list-tongxing>a{display: inline-block;padding: 0 1rem 0 0;}
+	.list-tongxing{white-space: nowrap;}
+	#tongxing-list{position: relative;background: #FFFFFF;height: 5.325rem;}
+	.mui-table-view{margin-bottom: 0.625rem;}
+	.mui-views,.mui-view,.mui-pages,.mui-page,.mui-page-content {position: absolute;left: 0;right: 0;top: 0;bottom: 0;width: 100%;height: 100%;background-color: #efeff4;}
+	.mui-pages {top: 46px;height: auto;}
+	.mui-page.mui-transitioning {-webkit-transition: -webkit-transform 300ms ease;transition: transform 300ms ease;}
+	.mui-page-left {-webkit-transform: translate3d(0, 0, 0);transform: translate3d(0, 0, 0);}
+	.mui-ios .mui-page-left {-webkit-transform: translate3d(-20%, 0, 0);transform: translate3d(-20%, 0, 0);}
+	.mui-navbar {position: fixed;right: 0;left: 0;z-index: 10;height: 44px;}
+	.mui-navbar .mui-bar {position: absolute;background: transparent;text-align: center;}
+	.mui-android .mui-navbar-inner.mui-navbar-left {opacity: 0;}
+	.mui-ios .mui-navbar-left .mui-left,
+	.mui-ios .mui-navbar-left .mui-center,
+	.mui-ios .mui-navbar-left .mui-right {opacity: 0;}
+	.mui-navbar .mui-btn-nav {-webkit-transition: none;transition: none;-webkit-transition-duration: .0s;transition-duration: .0s;}
+	.mui-navbar .mui-bar .mui-title {display: inline-block;width: auto;}
+	.mui-navbar-inner.mui-transitioning,
+	.mui-navbar-inner .mui-transitioning {-webkit-transition: opacity 300ms ease, -webkit-transform 300ms ease;transition: opacity 300ms ease, transform 300ms ease;}
+	.mui-page {display: none;}
+	.mui-pages .mui-page {display: block;}
+	.mui-input-row label{display: flex;align-items: center;height: 3.225rem;}
+
+	.row-self-2{
+		height:3rem!important;
+		overflow: auto;
+	}
+	textarea{
+		line-height: 1.4rem;
+		text-align: right;
+		padding-right: 1.825rem;
+		margin-top: 5px;
+		margin-bottom: 5px !important;
+	}
+	input[type=date],input[type=datetime]{text-align: right;width:auto;}
+	/*核查记录*/
+	/* 右侧角标 */
+	.icon_bz{display: block;position:absolute ;right: 0;top: 0;width: 0;height: 0;border-bottom:40px solid transparent;border-right: 40px solid red;border-left: 40px solid transparent;}
+	.icon_bz span{
+		transform: rotate(-42deg);
+	    -webkit-transform: rotate(-42deg);
+	    -ms-transform: rotate(-42deg);
+	    -moz--transform: rotate(-42deg);
+	    -o-transform: rotate(-42deg);
+	    position: absolute;
+	    color: #fff;
+	    margin: 0px 0 0 14px;
+	    font-size: 13px;
+	    height: 14px!important;
+	    line-height: 14px!important;
+	}
+	.my_list{top: 4px;}
+	.my_list>li.mui-table-view-cell{
+		width: 100%;
+		box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    	margin-bottom: 10px;
+	}
+	.my_list li.mui-table-view-cell span,
+	.my_list li.mui-table-view-cell h5,
+	.my_list li.mui-table-view-cell p{height:20px;line-height: 1.2;}
+	.people_man,.people_woman{margin-left: 10px;}
+	.people_man{background: url(../img/man.png) left center no-repeat;}
+	.people_woman{background: url(../img/woman.png) left center no-repeat;}
+	.yj_info{height: 40px;line-height: 30px;border-bottom: 1px solid rgba(204, 204, 204, 0.3);padding: 0.385rem 0;}
+	.yj_info .input-text-right button{position: relative;top: 13px;}
+	/*反馈弹窗*/
+	.fk_info{
+		width: 100%;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		background: #CCCCCC;
+		/*display: none;*/
+	}
+	.fk_info ul,li{list-style: none;}
+	.lightblue{color: #0088CC;}
+	.icon-datetime{background: url(../img/datetime.png) center no-repeat;background-size: 28px 28px;}
+	.right_nav_icon{
+		width: 32px;
+		line-height: 32px;
+		height: 32px;
+		position: absolute;
+		right: 10px;
+		top: 7px;
+		border: none;
+		outline: none;
+	}
+	
+	.tab_list{width:95%;margin: 0 auto;padding-left: 0;}
+	.tab_list li{
+		height: auto;
+/*		margin-top: 8px;
+		margin-bottom: 8px;*/
+		padding: 5px 10px;
+		border-bottom: 1px solid rgba(204, 204, 204, 0.3);
+	}
+	.tab_list li *{
+		text-align: left;
+		height: 24px;
+		line-height: 24px;
+	}
+	.tab_list li .title_name{
+		color: #333;
+	}
