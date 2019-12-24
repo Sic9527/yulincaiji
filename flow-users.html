@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		
+		<title></title>		
+		<link type="text/css" href="css/mui.min.css" rel="stylesheet" />
+		<link type="text/css" href="css/app.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/mui.picker.min.css" />
+		<style type="text/css">
+			.verif-img {width: 6.225rem;height: 3.225rem;margin:0.2rem;right: -0.6rem;}
+			.head-img {width: 2.225rem;height: 3.225rem;margin:0.2rem;}
+			.head-img-src{width: 4.225rem;height: 4.225rem;margin: 0rem;}
+			.user_header{position: fixed;background: #f2f2f2 !important;}
+			.user_list_temp{margin-top: 0px;padding-bottom: 30px;}
+			.message_area{border-radius: 5px; margin-bottom: 10px;}
+			.label_col_4{margin-top: 1px;}
+		    .message_area_flow { background: #FFFFFF; padding: 3rem 0;}
+			.mui-navigate-right:after{color: #999;}
+			.areaCinema_list.mui-navigate-right:after{top:40px}
+			.btn_te{border:none;background: rgba(52, 197, 253, 0.75);    color: #006c97;font-size: 0.875rem; width: 100%;padding:0.65rem 0 ;border-radius: 5px;text-align: center;}
+			.mui-bar-footer{padding:0.3rem 0.5rem;height: 50px;}
+			.mui-bar .mui-btn-block{padding: 0.5rem 0;top: 0px;}
+			.flow_person .mui-segmented-control.mui-scroll-wrapper .mui-control-item.flow_add{margin-left: 0px;margin-right: 0.852rem;}
+		   	.mui-slider .mui-slider-group .mui-slider-item img{ width: 90% !important;}
+		
+		</style>
+	</head>
+	
+	<body class="mui-plus mui-statusbar mui-statusbar-offset">
+		<header id="header" class="mui-bar mui-bar-nav header" style="box-shadow:none;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title"></h1>
+		</header>
+		<div class="mui-content">
+					<div class="mui-slider mui-fullscreen pserson_box">
+						<div id="segmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted" >
+							<a class="mui-control-item mui-active" dataType='pserson' href="#item1">同行同住人员核查</a>
+						</div>
+						<div class="mui-slider-group">
+							<!--人员核查-->
+							<div id="item1" class="mui-slider-item mui-control-content mui-active">
+								<div id="scroll" class="mui-scroll-wrapper">
+									<div class="mui-scroll">
+										<!--身份核查录入条件-->
+										<div class="pserson_number_area">
+											<div class="mui-flex person_input_number">
+												<label>身份证号：</label>
+												<div class="mui-flex-item mui-input-row">
+													<input type="text" id="input_number" class="mui-input-clear" placeholder="请输入身份证号">
+													<i class="iconfont icon-keyboard"></i>
+												</div>
+											</div>
+											<div class="mui-flex btn_person">
+												<div class="mui-flex-item">
+													<button class="mui-btn mui-btn-block " type="button" id="ocr_user_person" >
+														<i class="iconfont icon-shenfenzheng"></i>身份证拍照
+													</button>
+												</div>
+												
+												<div class="mui-flex-item">
+													<button class="mui-btn mui-btn-block" type="button" id="nfc_user_person">
+														<i class="iconfont icon-nfc"></i>NFC识别
+													</button>
+												</div>
+											</div>
+											<div class="mui-content-padded">
+												<button type="button" id="person_check_btn" class="mui-btn mui-btn-block mui-btn-blue" data-loading-text = "核查中…" data-loading-icon-position="right">核查</button>
+											</div>
+										</div>
+										<!--身份详细信息-->
+										<div class="Verificat-results">
+											<div class="mui-card">
+												<div class="mui-card-header">
+													<span class="f28">核查结果：</span>
+													<span class="mui-badge mui-badge-danger zd_tips mui-hidden" id="zd_tips"></span>
+												</div>
+												<div class="Verificat-informat">
+													<div class="verif-img"><img src="img/touxiang.png" id="header_img" /></div>
+													<ul class="verif-list">
+														<li>姓名：<b id="p_name"></b></li>
+														<li>性别：<b id="p_sex"></b><span class="mz_syte">民族：<b id="p_mz"></b></span></li>
+														<li>出生：<b id="p_bir_y"></b> 年 <b id="p_bir_m"></b> 月 <b id="p_bir_d"></b> 日</li>
+														<li>住址：<b id="p_address"></b></li>
+														<li class="pl40" >公民身份证号码：<b id="p_userCard"></b></li>
+													</ul>
+												</div>
+											</div>
+											<!---信息采集-->
+											<form class="mui-content" id="showTemplForm" >
+												<input type="hidden" id="p_sex_form" name="col_3"  value="" />
+												<input type="hidden" id="p_bir_form" name="col_5"  value="" />
+												<input type="hidden" id="p_userCard_form" name="col_4"  value="" />
+												<input type="hidden" id="p_name_form" name="col_1"  value="" />
+												<input type="hidden" id="p_mz_form" name="col_6"  value="" />
+												<input type="hidden" id="p_address_form" name="col_7"  value="" />
+												<input type="hidden" id="photo_img_val" name="col_20"  value="" />
+												<div id="userGroupHtml" class="user_header mui-segmented-control mui-segmented-control-inverted mui-segmented-control-primary"></div>
+												<div id="showTempl" class="user_list_temp" ></div>
+												<footer class="mui-bar mui-bar-footer">
+													<button type="button" id="submitBtnTT" class="mui-btn mui-btn-block mui-btn-primary" data-loading-text="提交中" >提交</button>
+												</footer>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+		<!--人员补录信息分组标题-->
+		<script id="userGroupTempl" type="text/html">
+			{{each data.column groupList}}																
+			<a class="mui-control-item {{if $index == '0' }} mui-active {{/if}}" href="#item_person_{{groupList.id}}">
+				{{groupList.name}}
+			</a>
+			{{/each}}
+		</script>
+		<!--
+			colComment: 列名称
+			colName: 列说明
+			colType: 控件类型
+			colTypeRule: 校验规则
+			flag: 是否显示：01显示，02不显示
+			optionValue: 字段控件为下拉框的选择值（存放字典code)
+			required: 是否必填项：01必填，02非必填
+		-->
+		
+		<script id="jsGroupListTempl" type="text/html">
+			<!--{{_titleName}}-->
+			<!--循环group-->
+			{{each data.column groupList}}
+			<div id="item_person_{{groupList.id}}" class="mui-control-content message_area_flow {{if $index == '0' }} mui-active {{/if}}">
+				<!--循环filed-->
+				{{each groupList.metaColumnList fieldList}}
+				<!--<div class="center_con">-->				
+				<div class="mui-input mui-flex" partName="{{groupList.name}}">
+					<label for="{{fieldList.colName}}" class="label_{{fieldList.colName}}" data-labelName = '{{fieldList.colComment}}'>
+						{{if fieldList.required == "01" }}<b class="icon-bitian">*</b>{{/if}}
+						{{fieldList.colComment}}：
+					</label>
+					
+					<div class="mui-flex-item">
+						<!--[_inputText：普通文本]-->
+						{{if fieldList.colType == "INPUTTEXT" }}
+							<input type="text" class="mui-input-clear {{fieldList.colTypeRule}}" data-labelNames = '{{fieldList.colComment}}' {{if fieldList.required == "01" }}min="1"{{/if}} {{fieldList.colTypeRule}}='t' name="{{fieldList.colName}}" id='' placeholder="请输入{{fieldList.colComment}}" vali>
+						{{/if}}
+						
+						<!--[nfc：NFC]-->
+						{{if fieldList.colType == "NFCOCR" }}
+							<input type="text" class="mui-input-clear {{fieldList.colTypeRule}}" data-labelNames = '{{fieldList.colComment}}' {{if fieldList.required == "01" }}min="1"{{/if}} {{fieldList.colTypeRule}}='t' name="{{fieldList.colName}}" id='' placeholder="请输入{{fieldList.colComment}}" vali>
+							<div class="mui-flex" style="width:100%;padding-top: 5px;">
+								<div class="mui-flex-item btn_nfc" style="padding-right: 0.5rem;"><div class="btn_te"><i class="iconfont icon-NFC"></i>NFC识别</div></div>
+								<div class="mui-flex-item btn_ocr" style="padding: 0 0 0 0.5rem;"><div class="btn_te"><i class="iconfont icon-ocr"></i>OCR拍照</div></div>
+							</div>
+						{{/if}}
+						<!--[nfc：NFC]-->
+						{{if fieldList.colType == "OCR" }}
+							<input type="text" class="mui-input-clear {{fieldList.colTypeRule}}" data-labelNames = '{{fieldList.colComment}}' {{if fieldList.required == "01" }}min="1"{{/if}} {{fieldList.colTypeRule}}='t' name="{{fieldList.colName}}" id='' placeholder="请输入{{fieldList.colComment}}" vali>
+							<div class="mui-flex" style="width:100%">
+								<div class="mui-flex-item btn_ocr" style="padding: 0 10% 0 5%;"><div class="btn_te"><i class="iconfont icon-ocr"></i>OCR拍照</div></div>
+							</div>
+						{{/if}}
+						<!--[nfc：NFC]-->
+						{{if fieldList.colType == "NFC" }}
+							<input type="text" class="mui-input-clear {{fieldList.colTypeRule}}" data-labelNames = '{{fieldList.colComment}}' {{if fieldList.required == "01" }}min="1"{{/if}} {{fieldList.colTypeRule}}='t' name="{{fieldList.colName}}" id='' placeholder="请输入{{fieldList.colComment}}" vali>
+							<div class="mui-flex" style="width:100%">
+								<div class="mui-flex-item btn_nfc" style="padding: 0 5% 0 10%;"><div class="btn_te"><i class="iconfont icon-NFC"></i>NFC识别</div></div>
+							</div>
+						{{/if}}
+						
+						<!--[_inputNumber：数字]-->
+						{{if fieldList.colType == "INPUTNUMBER" }}
+							<input type="number" class="mui-input-clear" data-labelNames = '{{fieldList.colComment}}' {{fieldList.colTypeRule}}='t' name="{{fieldList.colName}}" id='' placeholder="请输入{{fieldList.colComment}}" vali>
+						{{/if}}
+							
+						
+						<!--[_inputNumber：富文本]-->
+						{{if fieldList.colType == "TEXTAREA" }}
+							<input type="number" class="mui-input-clear" data-labelNames = '{{fieldList.colComment}}' {{fieldList.colTypeRule}}='t' name="{{fieldList.colName}}" id='' placeholder="请输入{{fieldList.colComment}}" vali>
+						{{/if}}
+							 
+						<!--[_inputNfc：NFC识别录入]-->
+						<!--[_textarea：富文本]-->
+						
+						<!--[_selectOption：下拉选择]"-->
+						{{if fieldList.colType == "SELECTOPTION" }}
+						<div class="list-cell-fr mui-navigate-right">
+							<select ng-model="selectedSite" name="{{fieldList.colName}}" data-labelNames = '{{fieldList.colComment}}' {{if fieldList.required == "01" }}cannot="no" vali{{/if}}>
+								<option value="no">请选择{{fieldList.colComment}}</option>
+								{{each fieldList.optionValue optionValueItem}}
+								<option value="{{optionValueItem._value}}">{{optionValueItem._text}}</option>
+								{{/each}}
+							</select>
+						</div>
+						{{/if}}
+						
+						<!--[_inputRadio：单选]-->
+						{{if fieldList.colType == "SWITCH" }}
+						<div style="height: 3.225rem;">
+							<div class="mui-switch flow_switch">
+								<div class="mui-switch-handle"></div>
+							</div>
+						</div>
+						{{/if}}
+											
+						<!--[date：日期]-->
+						{{if fieldList.colType == "DATEINPUT" }}
+						<div class="list-cell-fr mui-navigate-right">
+							<input type="text" data-options='{"type":"date","beginYear":1949,"endYear":2049}' data-labelNames = '{{fieldList.colComment}}' class="mui-input-clear check-date" placeholder="请选择{{fieldList.colComment}}"  {{if fieldList.required == "01" }}vali{{/if}} />
+						</div>
+						{{/if}}
+						
+						<!--[_areaCinema：显示照片]-->
+						{{if fieldList.colType == "CINEMAIMG" }}
+						<div class="list-cell-fr mui-navigate-right areaCinema_list">
+							<span class="mui-pull-right head areaCinema">
+								<img class="head-img mui-action-preview" src="img/camera.png"/>
+							</span>
+						</div>
+						{{/if}}
+						
+						<!--[_areaCinema：拍照]-->
+						{{if fieldList.colType == "AREACINEMA" }}
+								<div class="" style="height: 4.625rem;">
+							<div class="flow_person mui-slider">
+								<div id="sliderSegmentedControl" class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+									<div class="mui-scroll">
+										<div class="mui-control-item flow_add areaCinema">
+											<img class="head-img mui-action-preview areaCinema_img" src="img/camera.png"/>
+										</div>
+										<div class="mui-control-item flow_add areaCinema">
+											<img class="head-img mui-action-preview areaCinema_img" src="img/camera.png"/>
+										</div>
+										<div class="mui-control-item flow_add areaCinema">
+											<img class="head-img mui-action-preview areaCinema_img" src="img/camera.png"/>
+										</div>
+										<div class="mui-control-item flow_add areaCinema">
+											<img class="head-img mui-action-preview areaCinema_img" src="img/camera.png"/>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						{{/if}}
+					</div>
+				</div>	
+				<!--</div>-->
+				{{/each}}
+			</div>
+			{{/each}}
+		</script> 
+		<input type="hidden" name="mainId" id="mainId" value="" />
+	</body>
+  <script src="js/mui.min.js" type="text/javascript"></script>
+	<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+	<script type="text/javascript" src="js/id_card_vail.js"></script>
+	<script type="text/javascript" src="js/layer_mobile/layer.js"></script>
+	<script type="text/javascript" src="js/index_data.js"></script>
+	<script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/template-web.js"></script>
+	<script type="text/javascript" src="js/mui.picker.min.js"></script>
+	<script type="text/javascript" src="js/applogin.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/verification.js"></script>
+	<script src="js/test.js" type="text/javascript"></script>
+	<script src="js/watermark.js" type="text/javascript"></script>
+	<script src="js/main.js" type="text/javascript"></script>
+	<script src="js/jquery.js" type="text/javascript"></script>
+	<script src="js/common.js" type="text/javascript"></script>
+	<script src="js/mui.picker.min.js" type="text/javascript"></script>
+	<script type="text/javascript" src="js/applogin.js" ></script>
+	<script src="js/watermark.js" type="text/javascript"></script>
+	<!--<script src="js/test.js" type="text/javascript"></script>-->
+    <script type="text/javascript">
+    //获取当前登录用户ID，系统时间填充到页面中，作为默认值提交
+	var date = new Date();
+	var seperator1 = "-";
+	var seperator2 = ":";
+	var month = date.getMonth() + 1<10? "0"+(date.getMonth() + 1):date.getMonth() + 1;
+	var strDate = date.getDate()<10? "0" + date.getDate():date.getDate();
+	function checkTime(i){
+		if (i<10){
+			i = "0" + i;
+		}
+		return i;
+	}
+	//	var userIdVal = '';//测试完成后删除
+	var createTimeVal = date.getFullYear() + seperator1  + month  + seperator1  + strDate	+ " "  + date.getHours()  + seperator2  + checkTime(date.getMinutes())  + seperator2 +  + checkTime(date.getSeconds());//获取日期与时间
+	console.log(createTimeVal);
+		mui.init({		
+			beforeback: function() {　　　　
+				var psersonList = plus.webview.currentWebview().opener();　　　　
+				//refresh是A页面自定义事件
+				 mui.fire(psersonList, 'refreshFlowUser');
+				//返回true,继续页面关闭逻辑
+				return true;
+			}
+		});
+		mui.plusReady(function(){
+			//获取上一WebView窗口
+			self = plus.webview.currentWebview();
+			//冬天改变header标题内容
+			document.querySelector(".mui-title").innerHTML=self.tableComment;
+			//得到上一WebView传递的tableName参数，用于传递给服务器获取请求Clom字段
+			$('#tableName_val').val(self.tableName);
+			$('#mainId').val(self.mainId);
+			console.log('mainId:'+self.mainId); 
+			console.log(base_url+'base/table/'+self.relationTableId+'/'+self.relationTableDeputy);
+			//根据表ID获取展示字段
+			mui.ajax(base_url+'base/table/'+self.relationTableId+'/'+self.relationTableDeputy+'?guid='+new Date().getTime(),{
+			//mui.ajax('js/test.json',{
+				headers:{
+					'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
+					,'user_id_token':app.getUser().userid				
+				},
+				dataType:'json',//服务器返回json格式数据
+				type:'get',//HTTP请求类型
+				timeout:10000,//超时时间设置为10秒；
+				beforeSend: function() {
+				plus.nativeUI.showWaiting('正在加载');
+				mask.show();//显示遮罩层
+				},
+				complete: function() {
+					plus.nativeUI.closeWaiting();
+					mask.close();//关闭遮罩层
+				},
+				success:function(data){
+					console.log('服务器返回的字段json:',data);
+//					var data = data.formDataPerson;//测试完成后删除
+					if(data.message="success"){
+						console.log(data)
+						//将内容通过template-web js模板添加到DOM中
+						var html=template('jsGroupListTempl',data);						
+						var userGroupHtml=template('userGroupTempl',data);
+						$("#userGroupHtml").html(userGroupHtml);
+						$("#showTempl").html(html);
+						
+						//调用经纬度方法
+						PluginTestJwd();
+						//引入验证插件方法，具体验证规则参见对应的js/verification.js
+//  					$('#showTemplForm').vali();
+    					
+    					//重新初始化开关switch
+						mui('.mui-content .mui-switch')['switch']();
+						
+						//初始化添加同行同住slider
+						mui('.mui-scroll-wrapper').scroll({
+							deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+						});
+						
+						//同行同住开关时间监听,根据开关选中状态判断是否显示添加同行/同住入口
+						$('.flow_switch').on('toggle',function(event){
+//							console.log(event.detail.isActive);
+							event.detail.isActive ? $(this).parent('div').next('div.flow_person').removeClass('mui-hidden') : $(this).parent('div').next('div.flow_person').addClass('mui-hidden');
+						});
+						
+						mask.close();//关闭遮罩层
+						//调用 打开系统选择框按钮
+						$(".areaCinema_img").on('tap',function(e) {
+							var obj = $(this);
+							if (mui.os.plus) {
+						        var buttonTit = [{
+						            title: "拍照"
+						        }, {
+						            title: "从手机相册选择"
+						        }];
+						        
+						        plus.nativeUI.actionSheet({
+						            title: "上传图片",
+						            cancel: "取消",
+						            buttons: buttonTit
+						        }, function(b) { /*actionSheet 按钮点击事件*/
+						            switch (b.index) {
+						                case 0:
+						                    break;
+						                case 1:
+						                    getImage(obj); /*拍照*/
+						                    break;
+						                case 2:
+						                    galleryImg(obj);/*打开相册*/
+						                    break;
+						                default:
+						                    break;
+						            }
+						        })
+						    }        
+						});
+						 //调用NFC
+						mui('.btn_nfc').on('tap','div', function() {
+							$(this).css('background-color','#1fa0bc');
+							pluginjump();
+						});
+						//调用OCR
+						mui('.btn_ocr').on('tap','div', function() {
+							pluginOcr();
+						});
+						//重点人核查
+//				        $("input[data-labelnames='身份证号']").blur(function(){
+//				        	console.log('**********重点人核查')
+//				        	//inmpotantPerson();//是否是重点人员
+//				        	psersonDetalis();//常住人口详细信息回填
+//				        });
+				        //获取身份证号,并实时监听用户输入校验
+				        
+						$("input[data-labelnames='身份证号']").bind('input propertychange', function(){
+							console.log('**********重点人核查');
+							var idcardVal = $("input[data-labelnames='身份证号']").val();
+//							var reg = /(^\d{17}(\d|X)$)/;
+							var reg=/^(\d{18}$|^\d{17}(\d|X|x))$/;
+							var re = new RegExp(reg);
+							if (reg.test(idcardVal)) {
+								$("input[data-labelnames='身份证号']").blur();
+								psersonDetalis();//人口详细信息回填
+							}			        	
+						});
+				        //日期选择插件
+				        
+				        (function($$) {
+							var result = $('#result')[0];
+							var btns = $('.check-date'); 
+							btns.each(function(i, btn) {
+								btn.addEventListener('tap', function(e) {
+									var _self = this;
+									if(_self.picker) {
+										_self.picker.show(function (rs) {
+											console.log('选择结果: ' + rs.text); 
+											$(btns).val(rs.text);
+											btns.value = rs.text;
+											_self.picker.dispose();
+											_self.picker = null;
+										});
+									} else {
+										var optionsJson = this.getAttribute('data-options') || '{}';
+										var options = JSON.parse(optionsJson);
+										var id = this.getAttribute('id');
+										
+										_self.picker = new $$.DtPicker(options);
+										_self.picker.show(function(rs) {
+											/*
+											 * rs.value 拼合后的 value
+											 * rs.text 拼合后的 text
+											 * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+											 * rs.m 月，用法同年
+											 * rs.d 日，用法同年
+											 * rs.h 时，用法同年
+											 * rs.i 分（minutes 的第二个字母），用法同年
+											 */
+														console.log('选择结果1: ' + rs.text+' '+rs.h.text+':'+rs.i.text);
+	//										$(btns).val(rs.text);
+											$(_self).val(rs.text)
+											_self.picker.dispose();
+											_self.picker = null;
+										});
+									}
+									
+								}, false);
+							});
+						})(mui);
+						console.log(data.message);
+					}					
+				},
+				error:function(xhr,type,errorThrown){
+	//				异常处理；
+					console.log(type);
+				}
+			});
+			//打开相机功能，拿到照片的路径
+			// 拍照获取图片
+			function getImage(obj) {
+			    var c = plus.camera.getCamera();
+			    c.captureImage(function(e) {
+			        plus.io.resolveLocalFileSystemURL(e, function(entry) {
+			        	var imgSrc = entry.toLocalURL() + "?version=" + new Date().getTime(); //拿到图片路径
+			            // 其他操作,比如预览展示
+			 			console.log('getImage',imgSrc+obj);
+			 			$(obj).parent().append('<b class="delect_photo_img mui-icon mui-icon-close"></b>')
+ 						$(obj).attr('src',imgSrc).addClass('head-img-src');
+			 			$(obj).find('img.mui-action-preview').attr('src',imgSrc).addClass('head-img-src');
+			 			upload(obj);//上传服务器
+			 			$('.delect_photo_img').on('tap',function(e){
+			 				console.log($(this));
+							$(obj).attr('src','img/camera.png').removeClass('head-img-src').addClass('head-img');
+							$(obj).parent().find('b.delect_photo_img').remove();
+ 						})
+			        }, function(e) {
+			            console.log("读取拍照文件错误：" + e.message);
+			        });
+			    }, function(s) {
+			        console.log("error" + s);
+			    }, {
+			        filename: "_doc/camera/"
+			    })
+			}
+			//打开手机相册
+			// 从相册中选择图片 
+			function galleryImg(obj){
+				// 从相册中选择图片gallery
+			    plus.gallery.pick( function(e){
+			    	for(var i in e.files){
+				    	var fileSrc = e.files[i];
+			            // 其他操作,比如预览展示
+//			 			console.log('galleryImg',fileSrc+$(obj).html());
+						$(obj).parent().append('<b class="delect_photo_img mui-icon mui-icon-close"></b>')
+ 						$(obj).attr('src',fileSrc).addClass('head-img-src');
+			 			$(obj).find('img.mui-action-preview').attr('src',fileSrc).addClass('head-img-src');
+			 			$(obj).find('img.mui-action-preview').attr('src',fileSrc).addClass('head-img-src');
+			 			upload(obj);//上传服务器
+			 			$('.delect_photo_img').on('tap',function(e){
+							$(obj).attr('src','img/camera.png').removeClass('head-img-src').addClass('head-img');
+							$(obj).parent().find('b.delect_photo_img').remove();
+		 				})
+			    	}
+			    }, function ( e ) {
+			    	console.log( "取消选择图片" );
+			    },{
+			    	filter: "image",
+			    	multiple: true,
+			    	maximum: 5,
+			    	system: false,
+			    	onmaxed: function() {
+			    		plus.nativeUI.alert('最多只能选择5张图片');
+			    	}
+			    });
+			}
+			//上传到服务器方法
+			 //服务端接口路径
+            var server = base_url+self.tableName+'/image';
+            // 上传文件
+            function upload(obj){
+            	console.log('server:'+server);
+				//获取图片元素
+				var imgsArr = $(obj).find('img.mui-action-preview');
+			/*	mui.each(imgsArr, function(index, item){
+					console.log(index);
+					console.log(item.src);
+					createUp(imgsArr);
+				});*/
+				createUp(imgsArr.prevObject[0]);
+				function createUp (files) {					
+					var task = plus.uploader.createUpload(server,
+					{method:"POST"},
+					function(t,status){ //上传完成
+						console.log('status:'+JSON.stringify(status));
+						if(status==200){
+							console.log("上传成功："+t.responseText);
+							var json_t =  JSON.parse(t.responseText);
+							var imgurl = '';
+							for(var key in json_t){	
+								if(key=='data'){
+									if($('#photo_img_val').val() == ''){
+										$('#photo_img_val').val(json_t['data'])
+									}else{
+										$('#photo_img_val').val($('#photo_img_val').val()+','+json_t['data']);
+									}
+								}
+							}
+						}else{
+							console.log("上传失败："+status);
+						}
+					});
+					//添加其他参数
+					//task.addData("name","test");
+					// 页面中要上传的 图片路径
+					task.addFile(files.src,{key:'file'});
+					task.start();
+				}
+			}
+			//提交
+			$('#submitBtnTT').click(function(){
+				debugger;
+				var btnThis = this;
+				mui(btnThis).button('loading');
+				var str = $("#showTemplForm").serialize();
+				var data = str+"&mainId="+$("#mainId").val()
+				mui.ajax({
+					headers:{
+						'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
+						,'user_id_token':app.getUser().userid	
+						,'urlName':"车辆核查"
+					},
+					url:base_url+"/base/addMuti/"+self.tableName+'/'+self.relationTableName,
+					type:'post', 
+					dataType:'json',//服务器返回json格式数据
+					async:false,
+					data:data,
+					success: function(data) {
+						
+						mui(btnThis).button('reset');
+						console.log("返回数据"+JSON.stringify(data));
+						if(data.message=='success'){
+							mui.alert('提交成功！');
+							//获得父页面的webview
+							var view = plus.webview.currentWebview().opener();
+							mui.fire(view,'doMainId',{
+								mainId:data.data.mainId
+							});
+							mui.back();
+							
+							mui(btnThis).button('reset');
+						}else{
+							mui.alert(data.message);
+						}
+					}, 
+					error: function(xhr, type, errorThrown) { 
+						console.log(type); 
+					} 
+				}); 
+			});
+
+		});
+		
+    	var mask=mui.createMask(function(){//遮罩层callback事件
+			return true;//返回true关闭mask
+		});
+		
+		/*
+		 * 判断当scrollTop大于某个值时，头部增加背景色
+		 * */
+		$(window).scroll(function(){
+	        if ($(this).scrollTop() > 20) {
+	            $(".header").addClass("headBg");
+	        }else{
+	            $(".header").removeClass("headBg");
+	        }
+    	});
+    	/*
+		 *根据身份证号查询用户信息，将结果数据填充到核查结果区域中
+		 */
+		function findByCardIdPerson(idcardVal){
+		//	console.log('进入身份核查方法')
+			plus.nativeUI.showWaiting('正在查询，请稍后');
+			mask.show();//显示遮罩层
+			//console.log(base_url_pc+"postgresql/finByIdcardPersonInfo?idCard="+idcardVal)
+			layer.closeAll();
+			var idcardVal = idcardVal;
+			//$('#header_img').attr('src',base_url_pc+"postgresql/images.xhtml?idCard="+idcardVal+"&guid="+new Date().getTime());
+			mui.ajax(base_url_pc+"postgresql/images",{
+				headers:{
+					'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
+					,'user_id_token':app.getUser().userid				
+				},
+				data:{
+					"idCard":idcardVal
+				},//测试完成后启用
+				//dataType:'json',//服务器返回json格式数据
+				type:'post',//HTTP请求类型  改为pos
+				timeout:100000,//超时时间设置为10秒;
+				success:function(data){
+					if(data == 'error'){
+						$('#header_img').attr('src','img/touxiang.png');
+					}else{
+						clearPerson();
+						clearCar();
+						$('#header_img').attr('src',data);
+					}
+				},
+				error:function(xhr,type,errorThrown){
+					//异常处理；
+					mui.toast('网络异常,请重试!');
+					console.log(type);
+				}
+			});
+			//测试完成后启用该地址
+			mui.ajax(base_url_pc+"postgresql/finByIdcardPersonInfo?guid="+new Date().getTime(),{
+				headers:{
+					'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
+					,'user_id_token':app.getUser().userid	
+					,'urlName':"车辆核查"
+				},
+				data:{
+					"idCard":idcardVal
+				},//测试完成后启用
+				//dataType:'json',//服务器返回json格式数据
+				type:'post',//HTTP请求类型  改为pos
+				timeout:100000,//超时时间设置为10秒;
+				success:function(data){
+		//			var data = data.finByIdcardPersonInfo;//测试完成后删除
+					console.log(JSON.stringify(data))
+					psersonDataSource = data;
+					if(data.data[0].message=='重点人口'){//在逃+重点
+		//				clearPerson();
+		//				clearCar();
+						var dataSource = data.data[0].data;
+						console.log("**************dataSource00000000:"+JSON.stringify(dataSource));
+						console.log("**************csrq:"+dataSource.zdry.MZ);
+						$('#p_name').html(dataSource.zdry.XM);
+						$('#p_sex').html(dataSource.zdry.XB);				
+						$('#p_bir_y').html(dataSource.zdry.CSRQ.substring(0,4));
+						$('#p_bir_m').html(dataSource.zdry.CSRQ.substring(4,6));
+						$('#p_bir_d').html(dataSource.zdry.CSRQ.substring(6,8));				
+						$('#p_address').html(dataSource.zdry.HJD_XXDZ);
+						$('#p_userCard').html(dataSource.zdry.GMSFZHM);
+						$('#p_mz').html(dataSource.zdry.MZ);
+						
+						//填充隐藏域的值
+						$('#p_name_form').val(dataSource.zdry.XM);
+						$('#p_sex_form').val(dataSource.zdry.XB);				
+						$('#p_bir_form').val(dataSource.zdry.CSRQ);		
+						$('#p_address_form').val(dataSource.zdry.HJD_XXDZ);
+						$('#p_userCard_form').val(dataSource.zdry.GMSFZHM);
+						$('#p_mz_form').val(dataSource.zdry.MZ);
+						
+						if(dataSource.result=='yes'){
+							$('.zd_tips').removeClass('mui-hidden').show().html('<i class="iconfont icon-warning"></i>'+data.data[0].message);
+							//将内容通过template-web js模板添加到DOM中
+							console.log(data.data[0].message);
+							var html=template('zdrDetalisTempl',dataSource.zdry);
+							$("#topPopover").html(html);
+						}else{
+							$('.zd_tips').hide();
+						}
+					}
+					if(data.data[0].message=='在逃人口'){//在逃+重点
+		//				clearPerson();
+		//				clearCar();
+						var dataSource = data.data[0].data;
+						console.log("**************dataSource33333:"+JSON.stringify(dataSource));
+						$('#p_name').html(dataSource.ztry.XM);
+						$('#p_sex').html(dataSource.ztry.XBDM);				
+						$('#p_bir_y').html(dataSource.ztry.CSRQ.substring(0,4));
+						$('#p_bir_m').html(dataSource.ztry.CSRQ.substring(5,7));
+						$('#p_bir_d').html(dataSource.ztry.CSRQ.substring(8,10));				
+						$('#p_address').html(dataSource.ztry.HJD_XXDZ);
+						$('#p_userCard').html(dataSource.ztry.ZJHM);
+						$('#p_mz').html(dataSource.ztry.MZDM);
+						//填充隐藏域的值
+						$('#p_name_form').val(dataSource.ztry.XM);
+						$('#p_sex_form').val(dataSource.ztry.XBDM);				
+						$('#p_bir_form').val(dataSource.ztry.CSRQ);		
+						$('#p_address_form').val(dataSource.ztry.HJD_XXDZ);
+						$('#p_userCard_form').val(dataSource.ztry.ZJHM);
+						$('#p_mz_form').val(dataSource.ztry.MZDM);
+						if(dataSource.result=='yes'){
+							$('.zd_tips').removeClass('mui-hidden').show().html('<i class="iconfont icon-warning"></i>'+data.data[0].message);
+							//将内容通过template-web js模板添加到DOM中
+							var html=template('ztrDetalisTempl',dataSource.ztry);
+							$("#topPopover").html(html);
+						}else{
+							$('.zd_tips').hide();
+						}
+					}
+					if(data.data[1].code=='200'){ //常住人口	
+						if(data.data[0].data.result!='yes'){					
+		//					clearPerson();
+		//					clearCar();
+						}
+						console.log("**************dataSource111111111:"+JSON.stringify(data.data[1]));
+						var dataSource = data.data[1];
+						console.log(dataSource.data.czrk.xm)
+						$('#p_name').html(dataSource.data.czrk.xm);
+						$('#p_sex').html(dataSource.data.czrk.xbdm);				
+						$('#p_bir_y').html(dataSource.data.czrk.csrq.substring(0,4));
+						$('#p_bir_m').html(dataSource.data.czrk.csrq.substring(4,6));
+						$('#p_bir_d').html(dataSource.data.czrk.csrq.substring(6,8));				
+						$('#p_address').html(dataSource.data.czrk.xxdz);
+						$('#p_userCard').html(dataSource.data.czrk.gmsfzhm);
+						$('#p_mz').html(dataSource.data.czrk.mzdm);
+						//填充隐藏域的值
+						$('#p_name_form').val(dataSource.data.czrk.xm);
+						$('#p_sex_form').val(dataSource.data.czrk.xbdm);				
+						$('#p_bir_form').val(dataSource.data.czrk.csrq);		
+						$('#p_address_form').val(dataSource.data.czrk.xxdz);
+						$('#p_userCard_form').val(dataSource.data.czrk.gmsfzhm);
+						$('#p_mz_form').val(dataSource.data.czrk.mzdm);
+					}
+					if(data.data[2].code=='200'){ //暂住人口
+						if(data.data[0].data.result!='yes'){					
+		//					clearPerson();
+		//					clearCar();
+						}
+						var dataSource = data.data[2];
+						console.log("**************dataSource222222222222:"+JSON.stringify(data.data[2]));
+						$('#p_name').html(dataSource.data.zzrk.xm);
+						$('#p_sex').html(dataSource.data.zzrk.xb);				
+						$('#p_bir_y').html(dataSource.data.zzrk.csrq.substring(0,4));
+						$('#p_bir_m').html(dataSource.data.zzrk.csrq.substring(4,6));
+						$('#p_bir_d').html(dataSource.data.zzrk.csrq.substring(6,8));				
+						$('#p_address').html(dataSource.data.zzrk.czhkdz_xzqh);
+						$('#p_userCard').html(dataSource.data.zzrk.gmsfzhm);
+						$('#p_mz').html(dataSource.data.zzrk.mz);
+						//填充隐藏域的值
+						$('#p_name_form').val(dataSource.data.zzrk.xm);
+						$('#p_sex_form').val(dataSource.data.zzrk.xb);				
+						$('#p_bir_form').val(dataSource.data.zzrk.csrq);		
+						$('#p_address_form').val(dataSource.data.zzrk.czhkdz_xzqh);
+						$('#p_userCard_form').val(dataSource.data.zzrk.gmsfzhm);
+						$('#p_mz_form').val(dataSource.data.zzrk.mz);
+						$('label').each(function(index, element){
+							var labelName = $(element).attr('data-labelName');
+							if(labelName=='暂住地址详址'){
+								$(element).next('div').find('input').val(dataSource.data.zzrk.zzd_xxdz);
+							}else if(labelName=='暂住证签发日期'){
+								$(element).next('div').find('input').val(dataSource.data.zzrk.zzz_qfrq);
+							}else if(labelName=='现服务场所'){
+								$(element).next('div').find('input').val(dataSource.data.zzrk.x_fwcs);
+							}else if(labelName=='现从事职业'){
+								$(element).next('div').find('input').val(dataSource.data.zzrk.xcs_zy);
+							}else if(labelName=='暂住事由'){
+								$(element).next('div').find('input').val(dataSource.data.zzrk.zz_jzsydm);
+							}else if(labelName=='暂住证编号'){
+								$(element).next('div').find('input').val(dataSource.data.zzrk.zzjzzmbh);
+							}
+						});
+						
+					}
+					plus.nativeUI.closeWaiting();
+					mask.close();//关闭遮罩层
+					if(data.data[0].data.result == 'no' && data.data[1].code =='300' && data.data[2].code =='300'){
+						mui.alert('暂未查询到数据，请检查身份证输入是否正确！')
+					}
+					
+				},
+				error:function(xhr,type,errorThrown){
+					//异常处理；
+					mui.toast('网络异常,请重试!');
+					console.log(type);
+				}
+			});
+		    //根据身份证号获取身份照片
+		    plus.nativeUI.closeWaiting();
+				mask.close();//关闭遮罩层
+				/*if(data.data[0].data.result == 'no' && data.data[1].code =='300' && data.data[2].code =='300'){
+					mui.alert('暂未查询到数据，请检查身份证输入是否正确！')
+				}*/
+			
+		}
+		/*function personCardValue(dataSource,photoImg){
+			$(".btn_nfc").find('div').css('background-color','#34c5fd');//移除nfc背景颜色	
+			$('label').each(function(index, element){
+				var labelName = $(element).attr('data-labelName');
+				if(labelName=='姓名'){
+					$(element).next('div').find('input').val(dataSource[5]);
+				}else if(labelName=='性别'){
+					$(element).next("div").find('select').find("option:contains('"+dataSource[4]+"')").attr("selected",true);
+				}else if(labelName=='身份证号'){
+					$(element).next('div').find('input').val(dataSource[3]);
+				}else if(labelName=='出生日期'){
+					$(element).next('div').find('input').val(dataSource[1]);
+				}else if(labelName=='民族'){
+					$(element).next("div").find('select').find("option:contains('"+dataSource[2]+"')").attr("selected",true);
+				}else if(labelName=='户籍地址'){
+					$(element).next('div').find('input').val(dataSource[0]);
+				}else if(labelName=='照片'){
+					$(element).next('div').find('img.head-img').attr('src','img/camera.png');
+					$(element).next('div').find('img.head-img').attr('src',photoImg);
+				}
+			});
+		}*/
+		//人口详细信息回填
+		function psersonDetalis(){
+			console.log('*********人口详细信息回填');
+			//重点人员核查findfugitive
+        	var idcardVal = $("input[data-labelnames='身份证号']").val();
+//      	var idcardVal = '110102197108222111';
+        	console.log("idcardVal:"+idcardVal);
+			if($.trim(idcardVal).length == 0) { 
+				$(this).focus();
+			}else{				
+				mui.ajax(base_url_pc+"/postgresql/finByIdcardPersonInfo?guid="+new Date().getTime(),{
+					headers:{
+						'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
+						,'user_id_token':app.getUser().userid	
+						,'urlName':"车辆核查"
+					},
+					data:{
+						"idCard":idcardVal
+					},
+					dataType:'json',//服务器返回json格式数据
+					type:'post',//HTTP请求类型
+					timeout:10000,//超时时间设置为10秒;
+					beforeSend: function() {
+						plus.nativeUI.showWaiting('正在查询，请稍后');
+						mask.show();//显示遮罩层
+					},
+					complete: function() {
+						plus.nativeUI.closeWaiting();
+						mask.close();//关闭遮罩层
+					},
+					success:function(data){
+						console.log(data.data[2].code)
+						if(data.data[0].message=='重点人口'){//在逃+重点
+							var dataSource = data.data[0].data;
+							console.log("**************dataSource00000000:"+JSON.stringify(dataSource));
+							
+							$('h5[partName="其它信息"]').hide();
+							$('div[partName="其它信息"]').hide();
+							$('label').each(function(index, element){
+								var labelName = $(element).attr('data-labelName');
+								if(labelName=='姓名'){
+									$(element).next('div').find('input').val(dataSource.zdry.xm);
+								}else if(labelName=='性别'){
+									$(element).next("div").find('select').val(dataSource.zdry.xb);
+								}else if(labelName=='身份证号'){
+									$(element).next('div').find('input').val(dataSource.zdry.gmsfzhm);
+								}else if(labelName=='出生日期'){
+									$(element).next('div').find('input').val(dataSource.zdry.csrq);
+								}else if(labelName=='民族'){
+									$(element).next("div").find('select').val(dataSource.zdry.mz);
+								}else if(labelName=='户籍地址'){
+									$(element).next('div').find('input').val(dataSource.zdry.hjd_xxdz);
+								}
+							});
+							if(dataSource.result=='yes'){
+								$('.zhhc').show().html('<span class="qianke mui-badge mui-badge-danger" style="padding: 0.4rem 1.4rem;"><i class="iconfont icon-keypeople-warning"></i>'+dataSource.typelb+'</span>')
+								var html=template('zdrDetalisTempl',dataSource.zdry);
+								$("#topPopover").html(html);
+							}else{
+								$('.zhhc').hide();
+							}
+						}
+						if(data.data[0].message=='在逃人口'){//在逃+重点
+							var dataSource = data.data[0].data;
+							console.log("**************dataSource00000000:"+JSON.stringify(dataSource));
+							$('h5[partName="其它信息"]').hide();
+							$('div[partName="其它信息"]').hide();
+							$('label').each(function(index, element){
+								var labelName = $(element).attr('data-labelName');
+								if(labelName=='姓名'){
+									$(element).next('div').find('input').val(dataSource.ztry.xm);
+								}else if(labelName=='性别'){
+									$(element).next("div").find('select').val(dataSource.ztry.XBDM);
+								}else if(labelName=='身份证号'){
+									$(element).next('div').find('input').val(dataSource.ztry.zjhm);
+								}else if(labelName=='出生日期'){
+									$(element).next('div').find('input').val(dataSource.ztry.csrq);
+								}else if(labelName=='民族'){
+									$(element).next("div").find('select').val(dataSource.ztry.MZDM);
+								}else if(labelName=='户籍地址'){
+									$(element).next('div').find('input').val(dataSource.ztry.hjd_xxdz);
+								}
+							});
+							if(dataSource.result=='yes'){
+								$('.zhhc').show().html('<span class="qianke mui-badge mui-badge-danger" style="padding: 0.4rem 1.4rem;"><i class="iconfont icon-keypeople-warning"></i>'+data.data[0].message+'</span>')
+								
+								//将内容通过template-web js模板添加到DOM中
+								var html=template('ztrDetalisTempl',dataSource.ztry);
+								$("#topPopover").html(html);
+							}else{
+								$('.zhhc').hide();
+							}
+						}
+						if(data.data[1].code=='200'){ //常住人口
+							console.log("**************dataSource111111111:"+JSON.stringify(data.data[1]));
+							var dataSource = data.data[1];
+							console.log($('h5[partName="其它信息"]').html())
+							$('h5[partName="其它信息"]').hide();
+							$('div[partName="其它信息"]').hide();
+							$('label').each(function(index, element){
+								var labelName = $(element).attr('data-labelName');
+								if(labelName=='姓名'){
+									$(element).next('div').find('input').val(dataSource.data.czrk.xm);
+								}else if(labelName=='性别'){
+									$(element).next("div").find('select').val(dataSource.data.czrk.xbdm);
+								}else if(labelName=='身份证号'){
+									$(element).next('div').find('input').val(dataSource.data.czrk.gmsfzhm);
+								}else if(labelName=='出生日期'){
+									$(element).next('div').find('input').val(dataSource.data.czrk.csrq);
+								}else if(labelName=='民族'){
+									$(element).next("div").find('select').val(dataSource.data.czrk.mzdm);
+								}else if(labelName=='户籍地址'){
+									$(element).next('div').find('input').val(dataSource.data.czrk.xxdz);
+								}
+							});
+						}
+						if(data.data[2].code=='200'){ //暂住人口
+							var dataSource = data.data[2];
+							console.log("**************dataSource222222222222:"+JSON.stringify(data.data[2]));
+							$('label').each(function(index, element){
+								var labelName = $(element).attr('data-labelName');
+								if(labelName=='姓名'){
+									$(element).next('div').find('input').val(dataSource.data.zzrk.xm);
+								}else if(labelName=='性别'){
+									$(element).next("div").find('select').val(dataSource.data.zzrk.xb);
+								}else if(labelName=='身份证号'){
+									$(element).next('div').find('input').val(dataSource.data.zzrk.gmsfzhm);
+								}else if(labelName=='出生日期'){
+									$(element).next('div').find('input').val(dataSource.data.zzrk.csrq);
+								}else if(labelName=='民族'){
+									$(element).next("div").find('select').val(dataSource.data.zzrk.mz);
+								}else if(labelName=='户籍地址'){
+									$(element).next('div').find('input').val(dataSource.data.zzrk.xxdz);
+								}else if(labelName=='暂住地址详址'){
+									$(element).next('div').find('input').val(dataSource.data.zzrk.zzd_xxdz);
+								}else if(labelName=='暂住证签发日期'){
+									$(element).next('div').find('input').val(dataSource.data.zzrk.zzz_qfrq);
+								}else if(labelName=='现服务场所'){
+									$(element).next('div').find('input').val(dataSource.data.zzrk.x_fwcs);
+								}else if(labelName=='现从事职业'){
+									$(element).next('div').find('input').val(dataSource.data.zzrk.xcs_zy);
+								}else if(labelName=='暂住事由'){
+									$(element).next('div').find('input').val(dataSource.data.zzrk.zz_jzsydm);
+								}else if(labelName=='暂住证编号'){
+									$(element).next('div').find('input').val(dataSource.data.zzrk.zzjzzmbh);
+								}
+							});
+						}
+					},
+					error:function(xhr,type,errorThrown){
+						//异常处理；
+						mui.toast('网络异常,请重试!');
+						console.log(type);
+					}
+				});
+			}
+		}
+		var waiting ;
+		var readyWriteData = false;
+		var readyRead = false;
+		//人员调用nfc
+		$('#nfc_user_person').on('tap',function(){
+			$('#ocr_user_person').css('background-color','');
+			$(this).css('background-color','#00CC44');
+			isFirst = false;
+			plus.plugintest.PluginTestFunction(["Html5"],
+			function(result) {
+				var Test = plus.android.importClass("reno.Beam.MyData");
+				var test = new Test();
+				var data=plus.android.getAttribute(test,"name");
+				var photoUrl=plus.android.getAttribute(test,"photoUrl");
+				var arr = data.split(",");
+				personUserNfcValue(arr,photoUrl);	
+			},function(result){mui.alert(result);});
+		});
+		//人员调用ocr
+		//调用OCR插件方法
+		$('#ocr_user_person').on('tap',function(){
+			$('#nfc_user_person').css('background-color','');
+			$(this).css('background-color','#00CC44');
+			plus.plugintest.PluginNotification(["身份证",""],
+				function(result) {
+					var Test = plus.android.importClass("reno.Beam.MyData");
+					var test = new Test();
+					var data=plus.android.getAttribute(test,"name");
+					var arr = data.split(",");
+					personUserOcrValue(arr,"");
+			},function(result){mui.alert(result);});
+		});
+		
+		function personUserNfcValue(dataSource,photoImg){
+			$('input').val();
+			$('select').val();
+			$('#p_userCard').html(dataSource[3]);
+			$('#p_name').html(dataSource[5]);
+			$('#p_sex').html(dataSource[4]);
+			$('#p_mz').html(dataSource[2]);
+			$('#p_bir_y').html(dataSource[1].substring(0,4));
+			$('#p_bir_m').html(dataSource[1].substring(4,6));
+			$('#p_bir_d').html(dataSource[1].substring(6,8));
+			$('#p_address').html(dataSource[0]);
+			$('#input_number').val(dataSource[3]);
+			//填充隐藏域的值
+			$('#p_name_form').val(dataSource[5]);
+			$('#p_sex_form').val(dataSource[4]);				
+			$('#p_bir_form').val(dataSource[1]);		
+			$('#p_address_form').val(dataSource[0]);
+			$('#p_userCard_form').val(dataSource[3]);
+			$('#p_mz_form').val(dataSource[2]);
+		    if(photoImg!=''){
+		       $('#header_img').attr('src',photoImg);
+		    }else{
+		        $('#header_img').attr('src','img/touxiang.png');
+		    }
+		
+		}
+		function personUserOcrValue(dataSource,photoImg){
+			$('input').val();
+			$('select').val();
+			$('#p_userCard').html(dataSource[3]);
+			$('#p_name').html(dataSource[5]);
+			$('#p_sex').html(dataSource[4]);
+			$('#p_mz').html(dataSource[2]);
+			$('#p_bir_y').html(dataSource[1].substring(0,4));
+			$('#p_bir_m').html(dataSource[1].substring(5,7));
+			$('#p_bir_d').html(dataSource[1].substring(8,10));
+			$('#p_address').html(dataSource[0]);
+			$('#input_number').val(dataSource[3]);
+			//填充隐藏域的值
+			$('#p_name_form').val(dataSource[5]);
+			$('#p_sex_form').val(dataSource[4]);				
+			$('#p_bir_form').val(dataSource[1]);		
+			$('#p_address_form').val(dataSource[0]);
+			$('#p_userCard_form').val(dataSource[3]);
+			$('#p_mz_form').val(dataSource[2]);
+		    if(photoImg!=''){
+		       $('#header_img').attr('src',photoImg);
+		    }else{
+		        $('#header_img').attr('src','img/touxiang.png');
+		    }
+		}
+		//调用经纬度方法
+		function PluginTestJwd() {
+		//	plus.plugintest.PluginTestJwd(["Html5"],function(result) {
+		//		var Test = plus.android.importClass("reno.Beam.MyData");
+		//		var test = new Test();
+		//		var data=plus.android.getAttribute(test,"jwd");
+		//		var loglat = data.split(",");
+		//		$('label').each(function(index, element){
+		//		var labelName = $(element).attr('data-labelName');
+		//		if(labelName=='经度'){
+		//			$(element).next('div').find('input').val(loglat[0]);
+		//		}else if(labelName=='纬度'){
+		//			$(element).next('div').find('input').val(loglat[1]);
+		//		}else if(labelName=='采集时间'){
+		//			$(element).next('div').find('input').val(createTimeVal);
+		//		}
+		//	});
+		//	},function(result){mui.alert(result);});
+		
+			$('label').each(function(index, element){
+				var labelName = $(element).attr('data-labelName');
+				if(labelName=='经度'){
+					$(element).next('div').find('input').val("109.76289");
+				}else if(labelName=='纬度'){
+					$(element).next('div').find('input').val("38.27142");
+				}else if(labelName=='采集时间'){
+					$(element).next('div').find('input').val(createTimeVal);
+				}
+			});
+		}
+    </script>
+
+</html>

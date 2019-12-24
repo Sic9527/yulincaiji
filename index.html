@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>榆林信息采集</title>
+		<link type="text/css" href="css/mui.min.css" rel="stylesheet" />
+		<link type="text/css" href="css/app.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/mui.picker.min.css" />
+		<style type="text/css">
+			.mui-popover.mui-popover-action .mui-table-view {color: #000;text-align: left;font-size: 15px;}
+			.mui-popover .mui-badge{color: #333;/*background-color: rgba(234, 56, 16, 0.77);*/}
+			.mui-popover .mui-table-view{background-color: transparent;}
+/*			.mui-popover.mui-popover-action.mui-popover-bottom {color: #fff;background: rgba(0, 14, 14, 0.79);border-top: 2px solid #04eded;height: 70%;}
+*/			.mui-popover.mui-popover-action.mui-popover-bottom {color: #000;background: rgba(255, 255, 255, 1);border-top: 1px solid #101010;height: 71%;}
+			.mui-popover .mui-table-view{max-height: 100%;}
+			.mui-badge1{color: #333;}
+			.per_add_sty{ float: left;border: 1px solid #ccc; border-radius: 5px; height: 4.65rem;line-height: 1;}
+		</style>
+	</head>
+	<body class="mui-plus mui-statusbar mui-statusbar-offset">
+		
+		<!-- 主界面不动、菜单移动 -->
+		<!-- 侧滑导航根容器 -->
+		<div class="mui-off-canvas-wrap mui-draggable mui-slide-in check_menu">
+			<!-- 菜单容器 -->
+			<aside class="mui-off-canvas-left" id="offCanvasSide">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<div class="mui-table-view user_row" style="padding-top: 1rem;">
+							<li class="mui-table-view-cell mui-media">
+								<a href="javascript:;">
+									<img class="mui-media-object mui-pull-left" src="images/toux.png">
+									<div class="mui-media-body">
+										<span id="jyxm"></span><p class="mui-ellipsis">警员编号:<span id="jybh"></span></p>
+									</div>
+								</a>
+							</li>
+						</div>
+						<ul class="mui-table-view">
+							<li class="mui-table-view-cell">
+								<a class="mui-navigate-right" href="hcRecord.html">
+									我的核查记录
+								</a>
+							</li>
+							<li class="mui-table-view-cell">
+								<a class="mui-navigate-right" href="usercenter.html">
+									我的账户信息
+								</a>
+							</li>
+							<li class="mui-table-view-cell">
+								<a class="mui-navigate-right" href="zhuanxiang-list.html">
+									专项数据采集
+								</a>
+							</li>
+							<li class="mui-table-view-cell">
+								<a class="mui-navigate-right" href="bulu-list.html">
+									数据补录任务
+								</a>
+							</li>
+							<li class="mui-table-view-cell">
+								<a class="mui-navigate-right" href="cjpaiming.html">
+									采集量排名
+								</a>
+							</li>
+							<!--<li class="mui-table-view-cell">
+								<a class="mui-navigate-right" href="about.html">
+									关于信息采集
+								</a>
+							</li>-->
+						</ul>
+					</div>
+				</div>
+			</aside>
+			<!-- 主页面容器 -->
+			<div class="mui-inner-wrap">
+				<!-- 主页面标题 -->
+				<header class="mui-bar mui-bar-nav">
+					<a class="mui-icon mui-action-menu mui-icon-bars mui-pull-left" href="#offCanvasSide"></a>
+					<h1 class="mui-title">榆林信息采集</h1>
+					<!--<a class="mui-icon iconfont icon-xiaoxi mui-pull-right"></a>-->
+				</header>
+				<div class="mui-content">
+					<div class="mui-slider mui-fullscreen pserson_box">
+						<div id="segmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted" >
+							<a class="mui-control-item mui-active" dataType='pserson' href="#item1">人员核查</a>
+							<a class="mui-control-item" dataType='car' href="#item2">车辆核查</a>
+						</div>
+						<div class="mui-slider-group">
+							<!--人员核查-->
+							<div id="item1" class="mui-slider-item mui-control-content mui-active">
+								<div id="scroll" class="mui-scroll-wrapper">
+									<div class="mui-scroll">
+										<!--身份核查录入条件-->
+										<div class="pserson_number_area">
+											<div class="mui-flex person_input_number">
+												<label>身份证号：</label>
+												<div class="mui-flex-item mui-input-row">
+													<input type="text" id="input_number" class="mui-input-clear" placeholder="请输入身份证号">
+													<i class="iconfont icon-keyboard"></i>
+												</div>
+											</div>
+											<div class="mui-flex btn_person">
+												<div class="mui-flex-item">
+													<button class="mui-btn mui-btn-block " type="button" id="ocr_person" >
+														<i class="iconfont icon-shenfenzheng"></i>身份证拍照
+													</button>
+												</div>
+												
+												<div class="mui-flex-item">
+													<button class="mui-btn mui-btn-block" type="button" id="nfc_person">
+														<i class="iconfont icon-nfc"></i>NFC识别
+													</button>
+												</div>
+											</div>
+											<div class="mui-content-padded">
+												<button type="button" id="person_check_btn" class="mui-btn mui-btn-block mui-btn-blue" data-loading-text = "核查中…" data-loading-icon-position="right">核查</button>
+											</div>
+										</div>
+										<!--身份详细信息-->
+										<div class="Verificat-results">
+											<div class="mui-card">
+												<div class="mui-card-header">
+													<span class="f28">核查结果：</span>
+													<span class="mui-badge mui-badge-danger zd_tips mui-hidden" id="zd_tips"></span>
+												</div>
+												<div class="Verificat-informat">
+													<div class="verif-img"><img src="img/touxiang.png" id="header_img" /></div>
+													<ul class="verif-list">
+														<li>姓名：<b id="p_name"></b></li>
+														<li>性别：<b id="p_sex"></b><span class="mz_syte">民族：<b id="p_mz"></b></span></li>
+														<li>出生：<b id="p_bir_y"></b> 年 <b id="p_bir_m"></b> 月 <b id="p_bir_d"></b> 日</li>
+														<li>住址：<b id="p_address"></b></li>
+														<li class="pl40" >公民身份证号码：<b id="p_userCard"></b></li>
+													</ul>
+												</div>
+											</div>
+											<!---信息采集-->
+											<div class="caiji_are">
+												<a class="mui-navigate-right f20 person_cj_click" dataName="person" dataType="personFormData"  data-id = "2018113006935" data-tableName= "QS_LDRKXX" data-tableComment= "人员核查">采集信息</a>
+												<div class="caiji_detalis mui-hidden">
+													<div id="userGroupHtml" class="mui-segmented-control mui-segmented-control-inverted mui-segmented-control-primary"></div>
+													<form id="personFormData">
+														
+														<input type="hidden" id="p_name_form" name="col_1"  value="" />
+														<input type="hidden" id="p_sex_form" name="col_3"  value="" />
+														<input type="hidden" id="p_mz_form" name="col_6"  value="" />
+														<input type="hidden" id="p_bir_form" name="col_5"  value="" />
+														<input type="hidden" id="p_address_form" name="col_7"  value="" />
+														<input type="hidden" id="p_userCard_form" name="col_4"  value="" />
+														<input type="hidden" id="photo_img_val" name="col_20" value=""  />
+														<input type="hidden" id="yxq" name="col_14" value=""  />
+														<input type="hidden" id="sj" name="col_19" value=""  />
+														<input type="hidden" id="qfrq" name="col_27" value=""  />
+														<input type="hidden" id="jl_ybzj" name="col_36" style="display: none;" value=""  />
+														<div id="userListHtml"></div>
+														<input type="hidden" id="tableName_val" />
+														<input type="hidden" id="mainId" name="mainId" value="" />
+													</form>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!---车辆核查--->
+							<div id="item2"class="mui-slider-item mui-control-content">
+								<div id="scroll" class="mui-scroll-wrapper">
+									<div class="mui-scroll">
+										<div class="pserson_number_area">
+											<div class="mui-flex person_input_number">
+												<label>车牌号码：</label>
+												<div class="mui-flex-item mui-input-row">
+													<div class="car_input">
+														<ul class="clearfix ul_input">
+															<li class="input_pro"><span></span></li>
+															<li class="input_pp input_zim"><span></span></li>
+															<li class="input_pp"><span></span></li>
+															<li class="input_pp"><span></span></li>
+															<li class="input_pp"><span></span></li>
+															<li class="input_pp"><span></span></li>
+															<li class="input_pp"><span></span></li>
+														</ul>
+													</div>
+													<!--<i class="iconfont icon-keyboard"></i>-->
+												</div>
+												<input type="hidden" id='cph_input' />
+												<div class="car_ocr_btn" id="ocr_car"><span class="iconfont icon-cheliang"></span></div>
+											</div>
+											<div class="mui-flex person_input_number car_type_check">
+												<label>车辆类型：</label>
+												<div class="mui-flex-item mui-input-row">
+													<input type="hidden" name="" id="car_cph" value="" />
+													<select name="" id="sel_cllx" >
+														<option value="">请选择车辆类型</option>
+													</select>
+													<!--<input type="text" class="mui-input-clear" placeholder="请选择车辆类型" data-input-clear="6"><span class="mui-icon mui-icon-clear mui-hidden"></span>-->
+													<i class="mui-icon mui-icon-arrowdown"></i>
+												</div>
+											</div>
+											<div class="mui-content-padded">
+												<button type="button" class="mui-btn mui-btn-block mui-btn-blue" id="check_car" data-loading-text = "核查中…" data-loading-icon-position="right">核查</button>
+											</div>
+										</div>
+										<!--核查结果--->
+
+										<div class="Verificat-results">
+											<div class="mui-card">
+												<div class="mui-card-header">
+													<span class="f28">核查结果如下：</span>
+													<span class="mui-badge mui-badge-danger zd_tips zd_car_tips  mui-hidden" id="zd_car_tips"></span>
+												</div>
+												<div class="Verificat-informat">
+													<ul class="verif-list">
+														<li>车牌号码：<b id="car_cphm"></b></li>
+														<li>车辆类型：<b id="car_cllx"></b><span class="mz_syte">车身颜色：<b id="car_csysdm"></b></span></li>
+														<li>发动机号：<b id="car_fdjhm"></b></li>
+														<li>车辆品牌：<b id="car_clpp"></b></li>
+														<li>使用人身份证：<b id="car_syr_id"></b></li>
+														<li>使用人：<b id="car_syr"></b></li>
+													</ul>
+												</div>
+											</div>
+											<!---信息采集-->
+											<div class="caiji_are">
+												<a class="mui-navigate-right f20 person_cj_click" dataName="person"  dataType="carFormData" data-id = "2018113006973" data-tableName= "QS_BDCLXX" data-tableComment= "车辆核查">采集信息</a>
+												
+												<div class="caiji_detalis mui-hidden">
+													<div id="carGroupHtml" class="mui-segmented-control mui-segmented-control-inverted mui-segmented-control-primary"></div>
+													<form id="carFormData">
+														<div id="carListHtml"></div>
+														<input type="hidden" id="tableName_val" />
+														<input type="hidden" id="car_cphm_form" name="col_1" value="" />
+														<input type="hidden" id="car_cllx_form" name="col_4" value="" />
+														<input type="hidden" id="car_syr_form" name="col_14" value="" />
+														<input type="hidden" id="car_syr_id_form" name="col_18" value="" />
+														<input type="hidden" id="car_csysdm_form" name="col_2" value="" />
+														<input type="hidden" id="photo_imgcar_val" name="col_5" value="" />
+														<input type="hidden" id="jl_ybzj" name="col_36" style="display: none;" value=""  />
+													</form>
+												</div>
+											</div>
+											
+										</div>
+									</div>
+								</div>
+							</div>
+							
+						</div>
+					</div>
+				</div>				
+											
+				<footer class="mui-bar mui-bar-footer caiji_footer" id="person_sub_btn">
+					<button type="button" id="pserson_sbumit" dataType="personFormData" data-id="2018113006935" data-tableName= "QS_LDRKXX" class="mui-btn mui-btn-block mui-btn-primary btn_spac submitBtn" data-loading-text="提交中" >提交人员核查</button>
+				</footer>
+				
+				<footer class="mui-bar mui-bar-footer caiji_footer mui-hidden" id="car_sub_btn">
+					<button type="button" id="car_submit"  dataType="carFormData" data-id="2018113006973" data-tableName= "QS_BDCLXX"  class="submitBtn mui-btn mui-btn-block mui-btn-primary btn_spac" data-loading-text="提交中" >提交车辆信息</button>
+				</footer>
+				<div class="mui-off-canvas-backdrop"></div>
+			</div>
+		</div>
+		
+		<!--mui-popover mui-popover-action mui-popover-bottom-->
+		<div class="zdrDetalis mui-popover mui-popover-action mui-popover-bottom" id="topPopover">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">在逃人员编号：<span class="mui-badge1">{{ZTRYBH}}</span></li>
+				<li class="mui-table-view-cell">居住地详细地址：<span class="mui-badge1">{{XZD_XXDZ}}</span></li>
+				<li class="mui-table-view-cell">身高上限：<span class="mui-badge1">{{SGSX}}</span></li>
+				<li class="mui-table-view-cell">身高下限：<span class="mui-badge1">{{SGXX}}</span></li>
+				<li class="mui-table-view-cell">案件编号：<span class="mui-badge1">{{AJBH}}</span></li>
+				<li class="mui-table-view-cell">逃跑时间：<span class="mui-badge1">{{TPSJ}}</span></li>
+				<li class="mui-table-view-cell">抓逃奖金：<span class="mui-badge1">{{ZTJE}}</span></li>
+				<li class="mui-table-view-cell">在逃类型代码：<span class="mui-badge1">{{ZTLXDM}}</span></li>
+				<li class="mui-table-view-cell">立案单位：<span class="mui-badge1">{{LADW_XZQHDM}}</span></li>
+				<!--<li class="mui-table-view-cell">管辖单位名称<span class="mui-badge1">{{gx_dwmc}}</span></li>-->
+				<li class="mui-table-view-cell">主办人：<span class="mui-badge1">{{ZBRID}}({{ZBR_LXDH}})</span></li>
+			</ul>
+		</div>
+		<!--重点人详情-->
+		<script id="zdrDetalisTempl" type="text/html">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell"><span class="zdrylb">重点人员类别：</span><span class="mui-badge1">{{ZDRYLB}}</span></li>
+				<li class="mui-table-view-cell"><span class="zdrylb">预警级别：</span><span class="mui-badge1">{{CT_YJJB}}</span></li>
+				<li class="mui-table-view-cell"><span class="zdrylb">重点人细类：</span><span class="mui-badge1">{{ZDRYXL}}</span></li>
+				<li class="mui-table-view-cell"><span class="zdrylb">重点人员编号：</span><span class="mui-badge1">{{ZDRYBH}}</span></li>
+				<li class="mui-table-view-cell"><span class="zdrylb">记录创建时间：</span><span class="mui-badge1">{{JL_CJSJ}}</span></li>
+				<li class="mui-table-view-cell"><span class="zdrylb">记录撤销时间：</span><span class="mui-badge1">{{JL_CEXSJ}}</span></li>
+				<li class="mui-table-view-cell"><span class="zdrylb">记录更新时间：</span><span class="mui-badge1">{{JL_GXSJ}}</span></li>
+				<li class="mui-table-view-cell"><span class="zdrylb">立案单位名称：</span><span class="mui-badge1">{{LA_DWMC}}</span></li>
+				<!--<li class="mui-table-view-cell">管辖单位名称：<span class="mui-badge1">{{gx_dwmc}}</span></li>-->
+				<li class="mui-table-view-cell"><span class="zdrylb">居住地详细地址：</span><span class="mui-badge1">{{JZD_XXDZ}}</span></li>
+				<li class="mui-table-view-cell"><span class="zdrylb">居住地派出所：</span><span class="mui-badge1">{{JZD_PCS}}</span></li>
+			</ul>
+		</script>
+		<!--在逃人员详情-->
+		<script id="ztrDetalisTempl" type="text/html">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell"><span class="ztyrbh">在逃人员编号：</span><span class="mui-badge1">{{ZTRYBH}}</span></li>
+				<li class="mui-table-view-cell"><span class="ztyrbh">居住地详细地址：</span><span class="mui-badge1">{{XZD_XXDZ}}</span></li>
+				<li class="mui-table-view-cell"><span class="ztyrbh">案件编号：</span><span class="mui-badge1">{{AJBH}}</span></li>
+				<li class="mui-table-view-cell"><span class="ztyrbh">逃跑时间：</span><span class="mui-badge1">{{TPSJ}}</span></li>
+				<li class="mui-table-view-cell"><span class="ztyrbh">抓逃奖金：</span><span class="mui-badge1">{{ZTJE}}</span></li>
+				<li class="mui-table-view-cell"><span class="ztyrbh">在逃类型代码：</span><span class="mui-badge1">{{ZTLXDM}}</span></li>
+				<li class="mui-table-view-cell"><span class="ztyrbh">立案单位：</span><span class="mui-badge1">{{LADW_XZQHDM}}</span></li>
+				<!--<li class="mui-table-view-cell">管辖单位名称：<span class="mui-badge1">{{gx_dwmc}}</span></li>-->
+				<li class="mui-table-view-cell"><span class="ztyrbh">主办人：</span><span class="mui-badge1">{{ZBRID}}({{ZBR_LXDH}})</span></li>
+			</ul>
+		</script>
+		<!--车辆详情-->
+		<script id="carDetalisTempl" type="text/html">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">车牌号：<span class="mui-badge1">{{cph}}</span></li>
+				<li class="mui-table-view-cell">车身型号：<span class="mui-badge1">{{cllxdm}}</span></li>
+				<li class="mui-table-view-cell">车辆品牌：<span class="mui-badge1">{{cl_pp}}</span></li>
+				<li class="mui-table-view-cell">车身颜色：<span class="mui-badge1">{{csysdm}}</span></li>
+				<li class="mui-table-view-cell">车辆类型：<span class="mui-badge1">{{cllxdm}}</span></li>
+				<li class="mui-table-view-cell">发动机机号：<span class="mui-badge1">{{fdjddjh}}</span></li>
+				<li class="mui-table-view-cell">车辆识别代码：<span class="mui-badge1">{{clsb_dm}}</span></li>
+				<li class="mui-table-view-cell">是否参加被盗抢险：<span class="mui-badge1">{{cjbdqx_sf}}</span></li>
+				<li class="mui-table-view-cell">初次登记日期：<span class="mui-badge1">{{ccdjrq}}</span></li>
+				<li class="mui-table-view-cell">受理单位名称：<span class="mui-badge1">{{sldw_dwmc}}</span></li>
+			</ul>
+		</script>
+		
+			
+		<!--人员补录信息分组标题-->
+		<script id="userGroupTempl" type="text/html">
+			{{each data.column groupList}}																
+			<a class="mui-control-item {{if $index == '0' }} mui-active {{/if}}" href="#item_person_{{groupList.id}}">
+				{{groupList.name}}
+			</a>
+			{{/each}}
+		</script>
+		<!--人员补录信息分组字段列表展示-->
+		<script id="userListTempl" type="text/html">
+			{{each data.column groupList}}
+			<div id="item_person_{{groupList.id}}" class="mui-control-content message_area {{if $index == '0' }} mui-active {{/if}}">
+				{{each groupList.metaColumnList fieldList}}
+				<div class="mui-input mui-flex" partName="{{groupList.name}}">
+					<label for="zlrname" data-labelName = '{{fieldList.colComment}}'>{{if fieldList.required == "01" }}<b class="icon-bitian">*</b>{{/if}}{{fieldList.colComment}}：</label>
+					<div class="mui-flex-item">
+						<!--[_inputText：普通文本]-->
+						{{if fieldList.colType == "INPUTTEXT" }}
+							<input type="text" class="mui-input-clear {{fieldList.colTypeRule}}" data-labelNames = '{{fieldList.colComment}}' {{if fieldList.required == "01" }}min="1"{{/if}} {{fieldList.colTypeRule}}='t' name="{{fieldList.colName}}" id='' placeholder="请输入{{fieldList.colComment}}" vali>
+						{{/if}}
+						<!--[_inputNumber：数字]-->
+						{{if fieldList.colType == "INPUTNUMBER" }}
+							<input type="number" class="mui-input-clear" data-labelNames = '{{fieldList.colComment}}' {{fieldList.colTypeRule}}='t' name="{{fieldList.colName}}" id='' placeholder="请输入{{fieldList.colComment}}" vali>
+						{{/if}}
+							
+						
+						<!--[_inputNumber：富文本]-->
+						{{if fieldList.colType == "TEXTAREA" }}
+							<input type="number" class="mui-input-clear" data-labelNames = '{{fieldList.colComment}}' {{fieldList.colTypeRule}}='t' name="{{fieldList.colName}}" id='' placeholder="请输入{{fieldList.colComment}}" vali>
+						{{/if}}
+							 
+						<!--[_inputNfc：NFC识别录入]-->
+						<!--[_textarea：富文本]-->
+						
+						<!--[_selectOption：下拉选择]"-->
+						{{if fieldList.colType == "SELECTOPTION" }}
+						<div class="list-cell-fr mui-navigate-right">
+							<select ng-model="selectedSite" name="{{fieldList.colName}}" data-labelNames = '{{fieldList.colComment}}' {{if fieldList.required == "01" }}cannot="no" vali{{/if}}>
+								<option value="no" selected="selected">请选择{{fieldList.colComment}}</option>
+								{{each fieldList.optionValue optionValueItem}}
+								<option value="{{optionValueItem._text}}">{{optionValueItem._text}}</option>
+								{{/each}}
+							</select>
+						</div>
+						{{/if}}
+						
+						<!--[_inputRadio：单选]-->
+						{{if fieldList.colType == "SWITCH" }}
+						<!--<div style="height: 3.225rem;">
+							<div class="mui-d
+								switch flow_switch">
+								<div class="mui-switch-handle"></div>
+							</div>
+						</div>-->
+						{{/if}}
+											
+						<!--[date：日期]-->
+						{{if fieldList.colType == "DATEINPUT"}}
+							{{if fieldList.colComment == "来本地日期"}}
+									<input type="text" id="lbssj" data-options='{"type":"date","beginYear":1949,"endYear":2049}' data-labelNames = '{{fieldList.colComment}}' class="mui-input-clear check-date" placeholder="请选择{{fieldList.colComment}}" value=""  {{if fieldList.required == "01" }}vali{{/if}} />
+							{{/if}}
+							{{if fieldList.colComment == "身份证有效期"}}
+									<input type="text" id="sfzyxq" data-options='{"type":"date","beginYear":1949,"endYear":2049}' data-labelNames = '{{fieldList.colComment}}' class="mui-input-clear check-date" placeholder="请选择{{fieldList.colComment}}" value=""  {{if fieldList.required == "01" }}vali{{/if}} />
+							{{/if}}
+							{{if fieldList.colComment == "暂住证签发日期"}}
+									<input type="text" id="zzzqfrq" data-options='{"type":"date","beginYear":1949,"endYear":2049}' data-labelNames = '{{fieldList.colComment}}' class="mui-input-clear check-date" placeholder="请选择{{fieldList.colComment}}" value=""  {{if fieldList.required == "01" }}vali{{/if}} />
+							{{/if}}
+						{{/if}}
+						<!--[_areaCinema：显示照片]-->
+						{{if fieldList.colType == "CINEMAIMG" }}
+						<div class="mui-navigate-right areaCinema" >
+							<span class="mui-pull-right head areaCinema_stle_d" style="">
+								<img class="head-img mui-action-preview areaCinema_img" src="img/camera.png"/>
+							</span>
+						</div>
+						{{/if}}
+						
+						<!--[_areaCinema：拍照]-->
+						{{if fieldList.colType == "AREACINEMA" }}
+						<div class="" style="height: 4.625rem;">
+							<div class="flow_person mui-slider">
+								<div id="sliderSegmentedControl" class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+									<div class="mui-scroll">
+										<div class="mui-control-item flow_add areaCinema">
+											<img class="head-img mui-action-preview areaCinema_img" src="img/camera.png"/>
+										</div>
+										<div class="mui-control-item flow_add areaCinema">
+											<img class="head-img mui-action-preview areaCinema_img" src="img/camera.png"/>
+										</div>
+										<div class="mui-control-item flow_add areaCinema">
+											<img class="head-img mui-action-preview areaCinema_img" src="img/camera.png"/>
+										</div>
+										<div class="mui-control-item flow_add areaCinema">
+											<img class="head-img mui-action-preview areaCinema_img" src="img/camera.png"/>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						{{/if}}
+						{{if fieldList.relationTableDeputy=="deputy2"}}
+						<div class="flow_person mui-slider">
+							<div id="sliderSegmentedControl" class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+								<div class="mui-scroll txlist">
+									<a class="mui-control-item flow_add" href="flow-users.html" dataTitle='{{fieldList.colComment}}' dataRelationTableDeputy='{{fieldList.relationTableDeputy}}' dataRelationTableId='{{fieldList.relationTableId}}' dataRelationTableName='{{fieldList.relationTableName}}'  dataTableId='{{fieldList.tableId}}' dataTableName='{{fieldList.tableName}}' >
+										<i class="">+</i>
+									</a>
+								</div>
+							</div>
+						</div>
+						{{/if}}
+						{{if fieldList.relationTableDeputy=="deputy3"}}
+						<div class="flow_person mui-slider">
+							<div id="sliderSegmentedControl" class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+								<div class="mui-scroll tzlist">
+									<a class="mui-control-item flow_add" href="flow-users.html" dataTitle='{{fieldList.colComment}}' dataRelationTableDeputy='{{fieldList.relationTableDeputy}}' dataRelationTableId='{{fieldList.relationTableId}}' dataRelationTableName='{{fieldList.relationTableName}}'  dataTableId='{{fieldList.tableId}}' dataTableName='{{fieldList.tableName}}'>
+										<i class="">+</i>
+									</a>
+								</div>
+							</div>
+						</div>
+						{{/if}}
+					</div>
+				</div>
+				{{/each}}
+			</div>
+			{{/each}}
+		</script>
+		
+		<!--车辆补录信息分组标题-->
+		<script id="carGroupTempl" type="text/html">
+			{{each data.column groupList}}																
+			<a class="mui-control-item {{if $index == '0' }} mui-active {{/if}}" href="#item_car_{{groupList.id}}">
+				{{groupList.name}}
+			</a>
+			{{/each}}
+		</script>
+		
+		<!--车辆补录信息分组字段列表展示-->
+		<script id="carListTempl" type="text/html">
+			{{each data.column groupList}}
+			<div id="item_car_{{groupList.id}}" class="mui-control-content message_area {{if $index == '0' }} mui-active {{/if}}">
+				{{each groupList.metaColumnList fieldList}}
+				<div class="mui-input mui-flex" partName="{{groupList.name}}">
+					<label for="" data-labelName = '{{fieldList.colComment}}'>{{if fieldList.required == "01" }}<b class="icon-bitian">*</b>{{/if}}{{fieldList.colComment}}：</label>
+					<div class="mui-flex-item">
+						<!--[_inputText：普通文本]-->
+						{{if fieldList.colType == "INPUTTEXT" }}
+							<input type="text" class="mui-input-clear {{fieldList.colTypeRule}}" data-labelNames = '{{fieldList.colComment}}' {{if fieldList.required == "01" }}min="1"{{/if}} {{fieldList.colTypeRule}}='t' name="{{fieldList.colName}}" id='' placeholder="请输入{{fieldList.colComment}}" vali>
+						{{/if}}
+						<!--[_inputNumber：数字]-->
+						{{if fieldList.colType == "INPUTNUMBER" }}
+							<input type="number" class="mui-input-clear" data-labelNames = '{{fieldList.colComment}}' {{fieldList.colTypeRule}}='t' name="{{fieldList.colName}}" id='' placeholder="请输入{{fieldList.colComment}}" vali>
+						{{/if}}
+							
+						
+						<!--[_inputNumber：富文本]-->
+						{{if fieldList.colType == "TEXTAREA" }}
+							<input type="number" class="mui-input-clear" data-labelNames = '{{fieldList.colComment}}' {{fieldList.colTypeRule}}='t' name="{{fieldList.colName}}" id='' placeholder="请输入{{fieldList.colComment}}" vali>
+						{{/if}}
+							 
+						<!--[_inputNfc：NFC识别录入]-->
+						<!--[_textarea：富文本]-->
+						
+						<!--[_selectOption：下拉选择]"-->
+						{{if fieldList.colType == "SELECTOPTION" }}
+						<div class="list-cell-fr mui-navigate-right">
+							<select ng-model="selectedSite" name="{{fieldList.colName}}" data-labelNames = '{{fieldList.colComment}}' {{if fieldList.required == "01" }}cannot="no" vali{{/if}}>
+								<option value="no" selected="selected">请选择{{fieldList.colComment}}</option>
+								{{each fieldList.optionValue optionValueItem}}
+								<option value="{{optionValueItem._text}}">{{optionValueItem._text}}</option>
+								{{/each}}
+							</select>
+						</div>
+						{{/if}}
+						
+						<!--[_inputRadio：单选]-->
+						{{if fieldList.colType == "SWITCH" }}
+						<!--<div style="height: 3.225rem;">
+							<div class="mui-switch flow_switch">
+								<div class="mui-switch-handle"></div>
+							</div>
+						</div>-->
+						{{/if}}
+											
+						<!--[date：日期]-->
+						{{if fieldList.colType == "DATEINPUT" }}
+						<div class="list-cell-fr mui-navigate-right">
+							<input type="text" data-options='{"type":"date","beginYear":1949,"endYear":2049}' data-labelNames = '{{fieldList.colComment}}' class="mui-input-clear check-date" placeholder="请选择{{fieldList.colComment}}"  {{if fieldList.required == "01" }}vali{{/if}} />
+						</div>
+						{{/if}}
+						<!--[_areaCinema：显示照片]-->
+						{{if fieldList.colType == "CINEMAIMG" }}
+						<div class="mui-navigate-right areaCinema" >
+							<span class="mui-pull-right head areaCinema_stle_d" style="">
+								<img class="head-img mui-action-preview areaCinema_img" src="img/camera.png"/>
+							</span>
+						</div>
+						{{/if}}
+						
+						<!--[_areaCinema：拍照]-->
+						{{if fieldList.colType == "AREACINEMA" }}
+						<div class="" style="height: 4.625rem;">
+							<div class="flow_person mui-slider">
+								<div id="sliderSegmentedControl" class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+									<div class="mui-scroll">
+										<a class="mui-control-item flow_add areaCinema">
+											<img class="head-img mui-action-preview areaCinema_img" src="img/camera.png"/>
+										</a>
+										<a class="mui-control-item flow_add areaCinema">
+											<img class="head-img mui-action-preview areaCinema_img" src="img/camera.png"/>
+										</a>
+										<a class="mui-control-item flow_add areaCinema">
+											<img class="head-img mui-action-preview areaCinema_img" src="img/camera.png"/>
+										</a>
+										<a class="mui-control-item flow_add areaCinema">
+											<img class="head-img mui-action-preview areaCinema_img" src="img/camera.png"/>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						{{/if}}
+						{{if fieldList.relationTableDeputy=="deputy2"}}
+						<div class="flow_person mui-slider">
+							<div id="sliderSegmentedControl" class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+								<div class="mui-scroll txlist">
+									<a class="mui-control-item flow_add" href="flow-users.html" dataTitle='{{fieldList.colComment}}' dataRelationTableDeputy='{{fieldList.relationTableDeputy}}' dataRelationTableId='{{fieldList.relationTableId}}' dataRelationTableName='{{fieldList.relationTableName}}'  dataTableId='{{fieldList.tableId}}' dataTableName='{{fieldList.tableName}}' >
+										<i class="">+</i>
+									</a>
+								</div>
+							</div>
+						</div>
+						{{/if}}
+						{{if fieldList.relationTableDeputy=="deputy3"}}
+						<div class="flow_person mui-slider">
+							<div id="sliderSegmentedControl" class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+								<div class="mui-scroll tzlist">
+									<a class="mui-control-item flow_add" href="flow-users.html" dataTitle='{{fieldList.colComment}}' dataRelationTableDeputy='{{fieldList.relationTableDeputy}}' dataRelationTableId='{{fieldList.relationTableId}}' dataRelationTableName='{{fieldList.relationTableName}}'  dataTableId='{{fieldList.tableId}}' dataTableName='{{fieldList.tableName}}'>
+										<i class="">+</i>
+									</a>
+								</div>
+							</div>
+						</div>
+						{{/if}}
+					</div>
+				</div>
+				{{/each}}
+			</div>
+			{{/each}}
+		</script>
+		<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+		<script type="text/javascript" src="js/mui.min.js"></script>		
+		<script type="text/javascript" src="js/applogin.js" ></script>	
+		<script type="text/javascript" src="js/main.js"></script>
+		<script type="text/javascript" src="js/id_card_vail.js"></script>
+		<script type="text/javascript" src="js/layer_mobile/layer.js"></script>
+		<script type="text/javascript" src="js/index_data.js"></script>
+		<script type="text/javascript" src="js/index.js"></script>
+	    <script type="text/javascript" src="js/template-web.js"></script>
+		<script type="text/javascript" src="js/mui.picker.min.js"></script>
+		<script type="text/javascript" src="js/applogin.js"></script>
+		<script type="text/javascript" src="js/common.js"></script>
+		<script type="text/javascript" src="js/verification.js"></script>
+		<script src="js/test.js" type="text/javascript"></script>
+		<script src="js/watermark.js" type="text/javascript"></script>
+		
+		<script type="text/javascript">
+			// $("input").trigger("click").focus();
+				  mui.init({
+					  keyEventBind: {
+					  backbutton: false
+					  }
+					});
+			
+			var mask=mui.createMask(function(){//遮罩层callback事件
+				return true;//返回true关闭mask
+			});
+			if(app.checkUser()){
+				mui.post(base_url+"userDetail/usercenter?guid="+new Date().getTime(),{"id":app.getUser().userid},function(data){
+					if(data.code=='200'){
+						console.log(JSON.stringify(data));
+						data = data.data;
+						if(data.name != undefined || data.name!= ''){
+							$('#jyxm').html(data.name);
+						}if(data.idnumber != undefined || data.idnumber!= ''){
+							$('#jybh').html(data.idnumber);
+						}
+					}else{ 
+						mui.alert(data.message);
+					}
+				});
+			}
+			var tableId = '2018113006935';			
+			$('#tableName_val').val('QS_LDRKXX');
+			(function($) {			
+				//阻尼系数
+				var deceleration = mui.os.ios?0.003:0.0009;
+				$('.mui-scroll-wrapper').scroll({
+					bounce: false,
+					indicators: true, //是否显示滚动条
+					deceleration:deceleration
+				});	
+				mui('.mui-fullscreen').slider().stopped = true;
+				
+				//点击人员核查和车辆核查TAB切换
+				//头部人车核查标签切换
+				mui('#segmentedControl').on('tap', 'a', function(e) {
+					clearPerson();
+					clearCar();
+					if(e.detail.target.innerHTML=='车辆核查'){
+						jQuery('#person_sub_btn').hide();
+						jQuery('#car_sub_btn').removeClass('mui-hidden').show();			
+					}
+					if(e.detail.target.innerHTML=='人员核查'){
+						jQuery('#person_sub_btn').removeClass('mui-hidden').show();	
+						jQuery('#car_sub_btn').hide();						
+					}
+					
+//					car_sub_btn
+				});
+			})(mui);
+			mui.plusReady(function(){
+			/*	showCar();//车牌号输入虚拟键盘*/
+				//滑动人员核查和车辆核查TAB切换
+ 				document.querySelector('.mui-slider').addEventListener('slide', function(event) {
+//                    //alert("滑动监听=="+event.detail.slideNumber); 
+//                    $("#allTitle").find("a").attr("class","mui-control-item");
+//                    $("#allTitle").find("a").eq(event.detail.slideNumber).attr("class","mui-control-item mui-active");
+				});
+				window.addEventListener('doMainId', function(e){
+		        　    //获取参数值
+					var mainId = e.detail.mainId;
+					$('#mainId').val(mainId);
+					console.log("doMainId:"+mainId);
+		        });
+		        window.addEventListener('refreshFlowUser', function(e){//执行刷新
+		        	console.log("refreshFlowUser:"+$('#mainId').val()+"tableName:"+$('#tableName_val').val())
+	                mui.ajax(base_url+"base/getRelation?guid="+new Date().getTime(),{
+	                	headers:{
+							'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
+							,'user_id_token':app.getUser().userid	
+							,'urlName':"采集信息页面获取"
+						},
+						data:{
+							"tableName":$('#tableName_val').val(),
+							"id":$('#mainId').val()
+						},
+						dataType:'json',//服务器返回json格式数据
+						type:'get',//HTTP请求类型
+						timeout:10000,//超时时间设置为10秒；              
+						success:function(data){
+					
+							console.log(JSON.stringify(data))
+							if(data.code='200'){
+								if(txz == '同行'){
+									$('.txlist').prepend("<a class='mui-control-item flow_add per_add_sty'>"+data.data[0].name+"</a>");  
+								}
+							}
+						},
+						error:function(xhr,type,errorThrown){
+							//异常处理；
+							console.log(xhr,type,errorThrown);
+						}
+					});
+	            });
+	            
+			});
+			
+			//点击重点人类型标识弹出重点人详情信息
+			$('#zd_tips').on('tap',function(){
+				mui('#topPopover').popover('show'); // 将id为list的元素放在想要弹出的位置
+			});
+			//点击被盗类型标识弹出被盗车辆详情详情信息
+			$('#zd_car_tips').on('tap',function(){
+				mui('#topPopover').popover('show'); // 将id为list的元素放在想要弹出的位置
+			});
+			//采集补录信息折叠菜单事件获取
+//			mui('body').on('tap','.mui-collapse',function(e){
+////				console.log($(e))
+//              //阻止事件冒泡
+//              e.stopPropagation();
+//              if(this.classList.toggle('mui-active')){
+//              	dataPersonCar(tableId);
+//              }
+//         });	
+			//人员和车辆采集补录信息点击事件
+           $(".person_cj_click").on('tap',function(e){
+           		/*console.log($(this).attr('data-id'));*/
+				e.stopPropagation();
+				if($(this).hasClass('mui-active')){
+					$(this).removeClass('mui-active');
+					$(this).next('div.caiji_detalis').addClass('mui-hidden');
+				}else{
+					$(this).addClass('mui-active');
+					dataPersonCar($(this).attr('data-id'),$(this).attr('data-tableName'),$(this).attr('dataType'));
+					$(this).next('div.caiji_detalis').removeClass('mui-hidden');
+				}
+           });
+           //抽屉菜单列表点击事件
+			mui('.mui-off-canvas-left').on('tap', 'a', function() {
+				var href = this.getAttribute('href');
+				
+				//非plus环境，直接走href跳转
+				if(!mui.os.plus) {
+					location.href = href;
+					return;
+				}
+				//打开新窗口
+				var id = this.getAttribute("data-wid");
+				if(!id) {
+					id = href;
+				}
+				if(href && ~href.indexOf('.html')) {
+					//打开窗口的相关参数
+					var options = {
+						styles:{
+							popGesture: "close"
+						},
+						extras:{
+							"tableId":this.getAttribute("data-id"),
+							"tableName":this.getAttribute("data-tableName"),
+							"tableComment":this.getAttribute("data-tableComment"),
+							"mpId":this.getAttribute("data-mpId")
+						}
+					};
+					mui.openWindow(href,id,options);
+				}
+			});
+
+		mui.back=function () {  alert(1);var btnArray = ['是', '否']; mui.confirm('是否退出应用', '榆林市公安局', btnArray, function(e) { if (e.index == 0) { plus.runtime.quit(); } }) }
+		</script>
+	</body>
+</html>

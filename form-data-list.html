@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title></title>		
+		<link rel="stylesheet" type="text/css" href="css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="css/app.css">		
+		<link rel="stylesheet" type="text/css" href="css/mui.picker.min.css" />
+	</head>
+	<body class="mui-plus mui-statusbar mui-statusbar-offset">
+		<header id="header" class="mui-bar mui-bar-nav header" style="box-shadow:none;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title"></h1>
+			<!--<a class="mui-icon mui-icon-bars mui-pull-right"></a>-->
+		</header>
+		<form class="mui-content" id="showTemplForm" style="padding-bottom: 2rem;">
+			<div id="showTempl" ></div>
+			
+			<input type="hidden" id="tableName_val" />
+			<input type="hidden" id="mainId" name="mainId" value="" />
+			
+			<footer class="mui-bar mui-bar-footer" >
+				<button type="button" id="submitBtnZhuanxiang" dataType="showTemplForm" class="mui-btn mui-btn-block mui-btn-primary btn_spac" data-loading-text="提交中" >提交信息</button>
+			</footer>
+		</form>
+		<!--
+			colComment: 列名称
+			colName: 列说明
+			colType: 控件类型
+			colTypeRule: 校验规则
+			flag: 是否显示：01显示，02不显示
+			optionValue: 字段控件为下拉框的选择值（存放字典code)
+			required: 是否必填项：01必填，02非必填
+		-->
+		
+		<script id="userListTempl" type="text/html">
+			{{each data.column groupList}}
+			<div id="item{{groupList.id}}" class="mui-control-content message_area {{if $index == '0' }} mui-active {{/if}}">
+				{{each groupList.metaColumnList fieldList}}
+				<div class="mui-input mui-flex" partName="{{groupList.name}}">
+					<label for="zlrname" data-labelName = '{{fieldList.colComment}}'>
+						{{if fieldList.required == "01" }}<b class="icon-bitian">*</b>{{/if}}
+						{{fieldList.colComment}}：
+					</label>
+					<div class="mui-flex-item">
+						<!--[_inputText：普通文本]-->
+						{{if fieldList.colType == "INPUTTEXT" }}
+							<input type="text" class="mui-input-clear {{fieldList.colTypeRule}}" data-labelNames = '{{fieldList.colComment}}' {{if fieldList.required == "01" }}min="1"{{/if}} {{fieldList.colTypeRule}}='t' name="{{fieldList.colName}}" id='' placeholder="请输入{{fieldList.colComment}}" vali>
+						{{/if}}
+						<!--[_inputNumber：数字]-->
+						{{if fieldList.colType == "INPUTNUMBER" }}
+							<input type="number" class="mui-input-clear" data-labelNames = '{{fieldList.colComment}}' {{fieldList.colTypeRule}}='t' name="{{fieldList.colName}}" id='' placeholder="请输入{{fieldList.colComment}}" vali>
+						{{/if}}
+							
+						
+						<!--[_inputNumber：富文本]-->
+						{{if fieldList.colType == "TEXTAREA" }}
+							<input type="number" class="mui-input-clear" data-labelNames = '{{fieldList.colComment}}' {{fieldList.colTypeRule}}='t' name="{{fieldList.colName}}" id='' placeholder="请输入{{fieldList.colComment}}" vali>
+						{{/if}}
+							 
+						<!--[_inputNfc：NFC识别录入]-->
+						<!--[_textarea：富文本]-->
+						
+						<!--[_selectOption：下拉选择]"-->
+						{{if fieldList.colType == "SELECTOPTION" }}
+						<div class="list-cell-fr mui-navigate-right">
+							<select ng-model="selectedSite" name="{{fieldList.colName}}" data-labelNames = '{{fieldList.colComment}}' {{if fieldList.required == "01" }}cannot="no" vali{{/if}}>
+								<option value="no">请选择{{fieldList.colComment}}</option>
+								{{each fieldList.optionValue optionValueItem}}
+								<option value="{{optionValueItem._text}}">{{optionValueItem._text}}</option>
+								{{/each}}
+							</select>
+						</div>
+						{{/if}}
+						
+						<!--[_inputRadio：单选]-->
+						{{if fieldList.colType == "SWITCH" }}
+						<!--<div style="height: 3.225rem;">
+							<div class="mui-switch flow_switch">
+								<div class="mui-switch-handle"></div>
+							</div>
+						</div>-->
+						{{/if}}
+											
+						<!--[date：日期]-->
+						{{if fieldList.colType == "DATEINPUT" }}
+						<div class="list-cell-fr mui-navigate-right">
+							<input type="text" data-options='{"type":"date","beginYear":1949,"endYear":2049}' data-labelNames = '{{fieldList.colComment}}' class="mui-input-clear check-date" placeholder="请选择{{fieldList.colComment}}"  {{if fieldList.required == "01" }}vali{{/if}} />
+						</div>
+						{{/if}}
+						<!--[_areaCinema：显示照片]-->
+						{{if fieldList.colType == "CINEMAIMG" }}
+						<div class="mui-navigate-right areaCinema" >
+							<span class="mui-pull-right head " style="float: left;">
+								<img class="head-img mui-action-preview" src="img/camera.png"/>
+							</span>
+						</div>
+						{{/if}}
+						
+						<!--[_areaCinema：拍照]-->
+						{{if fieldList.colType == "AREACINEMA" }}
+						<div class="" style="height: 4.625rem;">
+							<div class="flow_person mui-slider mui-fullscreen">
+								<div id="sliderSegmentedControl" class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+									<div class="mui-scroll">
+										<a class="mui-control-item flow_add areaCinema">
+											<img class="head-img mui-action-preview" src="img/camera.png"/>
+										</a>
+										<a class="mui-control-item flow_add areaCinema">
+											<img class="head-img mui-action-preview" src="img/camera.png"/>
+										</a>
+										<a class="mui-control-item flow_add areaCinema">
+											<img class="head-img mui-action-preview" src="img/camera.png"/>
+										</a>
+										<a class="mui-control-item flow_add areaCinema">
+											<img class="head-img mui-action-preview" src="img/camera.png"/>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						{{/if}}
+						{{if fieldList.relationTableDeputy=="deputy2"}}
+						<div class="flow_person mui-slider mui-fullscreen">
+							<div id="sliderSegmentedControl" class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+								<div class="mui-scroll txlist">
+									<a class="mui-control-item flow_add" href="flow-users.html" dataTitle='{{fieldList.colComment}}' dataRelationTableDeputy='{{fieldList.relationTableDeputy}}' dataRelationTableId='{{fieldList.relationTableId}}' dataRelationTableName='{{fieldList.relationTableName}}'  dataTableId='{{fieldList.tableId}}' dataTableName='{{fieldList.tableName}}' >
+										<i class="">+</i>
+									</a>
+								</div>
+							</div>
+						</div>
+						{{/if}}
+						{{if fieldList.relationTableDeputy=="deputy3"}}
+						<div class="flow_person mui-slider mui-fullscreen">
+							<div id="sliderSegmentedControl" class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+								<div class="mui-scroll tzlist">
+									<a class="mui-control-item flow_add" href="flow-users.html" dataTitle='{{fieldList.colComment}}' dataRelationTableDeputy='{{fieldList.relationTableDeputy}}' dataRelationTableId='{{fieldList.relationTableId}}' dataRelationTableName='{{fieldList.relationTableName}}'  dataTableId='{{fieldList.tableId}}' dataTableName='{{fieldList.tableName}}'>
+										<i class="">+</i>
+									</a>
+								</div>
+							</div>
+						</div>
+						{{/if}}
+					</div>
+				</div>
+				{{/each}}
+			</div>
+			{{/each}}
+		</script>
+		
+	</body>
+    <script src="js/mui.min.js" type="text/javascript"></script>
+    <script src="js/template-web.js" type="text/javascript"></script>
+	<script src="js/main.js" type="text/javascript"></script>
+	<script src="js/jquery.js" type="text/javascript"></script>
+	<script src="js/verification.js" type="text/javascript"></script>
+	<script src="js/common.js" type="text/javascript"></script>
+	<script src="js/test.js" type="text/javascript"></script>
+	<script src="js/mui.picker.min.js" type="text/javascript"></script>
+	<script type="text/javascript" src="js/applogin.js" ></script>	
+	<script src="js/layer_mobile/layer.js" type="text/javascript"></script>
+	<script src="js/index.js" type="text/javascript"></script>
+	<script src="js/index_data.js" type="text/javascript"></script>
+	<script src="js/watermark.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    	var self;
+    	var mask=mui.createMask(function(){//遮罩层callback事件
+			return true;//返回true关闭mask
+		});
+		var createTimeVal;		
+        var isFirst = true; 
+        var txz;
+        mui.plusReady(function(){
+        	//获取上一WebView窗口
+			self = plus.webview.currentWebview();
+			//动态改变header标题内容
+			document.querySelector(".mui-title").innerHTML=self.tableComment;
+			//得到上一WebView传递的tableName参数，用于传递给服务器获取请求Clom字段
+			$('#tableName_val').val(self.tableName);
+			//获取当前登录用户ID，系统时间填充到页面中，作为默认值提交
+			var date = new Date();
+			var seperator1 = "-";
+			var seperator2 = ":";
+			var month = date.getMonth() + 1<10? "0"+(date.getMonth() + 1):date.getMonth() + 1;
+			var strDate = date.getDate()<10? "0" + date.getDate():date.getDate();
+			var userIdVal = app.getUser().userid;//测试完成后启用
+//			var userIdVal = '';//测试完成后删除
+			createTimeVal = date.getFullYear() + seperator1  + month  + seperator1  + strDate	+ " "  + date.getHours()  + seperator2  + date.getMinutes()  + seperator2 + date.getSeconds();;//获取日期与时间
+			var relationIdVal = '';
+			var appendHtml = "<input type='hidden' id='userId' value='"+userIdVal+"' class='mui-input-clear' name='userId'/>";
+			appendHtml+="<input type='hidden' id='createTime' value='"+createTimeVal+"' class='mui-input-clear' name='createTime'/>";
+			appendHtml+="<input type='hidden' id='relationId' value='"+relationIdVal+"' class='mui-input-clear' name='relationId'/>";
+			
+			//测试完成后启用该地址
+			mui.ajax(base_url+'base/table/'+self.tableId+'/DEPUTY1?guid='+new Date().getTime(),{
+//			mui.ajax('js/test.json',{
+				dataType:'json',//服务器返回json格式数据
+				type:'get',//HTTP请求类型
+				timeout:10000,//超时时间设置为10秒；	
+				beforeSend: function() {
+					plus.nativeUI.showWaiting('正在加载');
+					mask.show();//显示遮罩层
+				},
+				complete: function() {
+					plus.nativeUI.closeWaiting();
+					mask.close();//关闭遮罩层
+				},
+				success:function(data){
+		//			console.log(data)
+					if(data.message="success"){
+						if(data.data.column.length<1){
+							$("#showTempl").html('<div style="text-align:center;padding:6rem 0 0"><div style="padding-bottom:1rem;text-align:center;"><img src="img/none.png" style="height:5rem;widht:5rem" /></div><p style="color:#eee;font-size:1.125rem">数据采集内容未同步</p><button class="mui-btn mui-action-back" style="background:#00fcff; padding: 0.4rem 1.6rem;border: none;">返回</button></div>');
+							$('footer').hide();
+						}else{
+							$('footer').show();
+							var userListHtml=template('userListTempl',data);
+							$("#showTempl").html(userListHtml+appendHtml);
+							//引入验证插件方法，具体验证规则参见对应的js/verification.js
+							$('#showTemplForm').vali();
+						
+							
+							//重新初始化开关switch
+							mui('.mui-content .mui-switch')['switch']();
+							mui('.mui-scroll-wrapper').scroll({
+								deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+							});
+							//调用 打开系统选择框按钮
+							$(".areaCinema").on('tap',function(e) {
+								var obj = $(this);
+								if (mui.os.plus) {
+							        var buttonTit = [{
+							            title: "拍照"
+							        }, {
+							            title: "从手机相册选择"
+							        }];
+							        
+							        plus.nativeUI.actionSheet({
+							            title: "上传图片",
+							            cancel: "取消",
+							            buttons: buttonTit
+							        }, function(b) { /*actionSheet 按钮点击事件*/
+							            switch (b.index) {
+							                case 0:
+							                    break;
+							                case 1:
+							                    getImage(obj); /*拍照*/
+							                    break;
+							                case 2:
+							                    galleryImg(obj);/*打开相册*/
+							                    break;
+							                default:
+							                    break;
+							            }
+							        })
+							    }        
+							});
+							//日期选择插件
+					        (function($$) {
+								var result = $('#result')[0];
+								var btns = $('.check-date'); 
+								btns.each(function(i, btn) {
+									btn.addEventListener('tap', function(e) {
+										var _self = this;
+										if(_self.picker) {
+											_self.picker.show(function (rs) {
+												console.log('选择结果: ' + rs.text); 
+												$(btns).val(rs.text);
+												btns.value = rs.text;
+												_self.picker.dispose();
+												_self.picker = null;
+											});
+										} else {
+											var optionsJson = this.getAttribute('data-options') || '{}';
+											var options = JSON.parse(optionsJson);
+											var id = this.getAttribute('id');
+											
+											_self.picker = new $$.DtPicker(options);
+											_self.picker.show(function(rs) {
+												/*
+												 * rs.value 拼合后的 value
+												 * rs.text 拼合后的 text
+												 * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+												 * rs.m 月，用法同年
+												 * rs.d 日，用法同年
+												 * rs.h 时，用法同年
+												 * rs.i 分（minutes 的第二个字母），用法同年
+												 */
+															console.log('选择结果1: ' + rs.text+' '+rs.h.text+':'+rs.i.text);
+												
+//												$(btns).val(rs.text);
+												$(_self).val(rs.text)
+												_self.picker.dispose();
+												_self.picker = null;
+											});
+										}
+										
+									}, false);
+								});
+							})(mui);
+							
+							//同行同住点击跳转
+							mui('.flow_person').on('tap', 'a', function() {
+								var href = this.getAttribute('href');
+								
+								//非plus环境，直接走href跳转
+								if(!mui.os.plus) {
+									location.href = href;
+									return;
+								}
+								//打开新窗口
+								var id = this.getAttribute("data-wid");
+								if(!id) {
+									id = href;
+								}
+						
+								if(href && ~href.indexOf('.html')) {
+									txz = this.getAttribute("dataTitle");
+									//打开窗口的相关参数
+									var options = {
+										styles:{
+											popGesture: "close"
+										},
+										extras:{
+											"relationTableDeputy":this.getAttribute("dataRelationTableDeputy"),
+											"relationTableId":this.getAttribute("dataRelationTableId"),
+											"relationTableName":this.getAttribute("dataRelationTableName"),
+											"tableId":this.getAttribute("dtaTableId"),
+											"tableName":this.getAttribute("dataTableName"),
+											"tableComment":this.getAttribute("dataTitle"),
+											"mainId":$('#mainId').val()
+										}
+									};
+									mui.openWindow(href,id,options);
+								}
+							});
+						}
+					}else{
+						
+					}
+				}
+			});	
+        });
+		
+   </script>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>统一认证页面</title>		
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/app.css">
+		<style type="text/css">
+			body{
+				width:100%;
+				height: 100%;
+				/*background: url(img/loginBg.jpg) top center no-repeat;*/
+				background-color: #1A9BEE;
+				background-size:auto;
+				overflow:auto;
+			}
+			.img_logo_jh img{margin-top: 120px;}
+			.login_form{width: 80%;margin: 2rem auto 3rem;overflow: hidden;}
+			.login_form div{position: relative;border: 1px solid #0becec;margin-bottom: 1rem; border-radius: 5px;}
+			.login_form input,.login_form button{border-radius: 10rem;padding: .325rem .623rem;height: 3.025rem;margin-bottom: 1rem;}
+			.login_form input{text-indent: 0;background: none;border-radius:5px;font-size: 1.1rem; margin-left: 40px;color: #fff;}
+			.login_form i{position: absolute;left: 1rem;top: 50%;margin-top:-0.6rem;font-size: 1.225rem;color: #0becec;}
+			input::-webkit-input-placeholder {text-align: left;color: #999;}
+			.login_form button{
+				background:url('img/login_btn.png') center center no-repeat;width: 210px;
+    			width: 210px;
+			    border: none;
+			    border-radius: 0;
+			    margin: 35px auto 0;
+    		}
+    		.parent{height: 7px; background: #ebebeb;width: 60%;margin: auto;overflow: hidden;}  
+            .son{width: 7px;height: 7px;background: #cdcdcd;float: left;}
+    		.clearText{width:13px;height:13px;float:right;position: relative;top: -45px;color: #eee;}
+    		.togglePwd{width:13px;height:7px;float:right;position: relative;top: -45px;}
+    		.showPwd{}
+    		.login_form input{margin-bottom: 0px;border:none;width: 86%;}
+		</style>
+	</head>
+	<body class="mui-plus mui-statusbar mui-statusbar-offset" onload="checkUser()">
+		<div id="" class="mui-text-center">
+			<div class="img_logo_jh"><img src="img/logo.png"/></div>
+		</div>
+		<div class="login_form">
+			<div class="user_name mui-input-row" style="display: none;" >
+				<i class="iconfont icon-yonghufangkeshu"></i>
+				<input id='account' name="account" type="text" class="mui-input-clear mui-input" value="612701198403110033" placeholder="请输入用户名" style="display: none;">
+			</div>
+			<!--<div class="slrz mui-text-center">
+				<a href="index.html" id="togglePwd">刷脸认证</a>
+			</div>-->
+		</div>
+		<center>
+			<h2 class="user_login" style="border: none;color: white;" >统一认证中
+				<marquee direction="right" scrolldelay="400" scrollamount="10" height="30px" width="15px">...</marquee>
+			</h2>
+			<!--<input type="button" id = "togglePwd" style="height: 50px; width: 70px;" value="认证" onclick="checkUser()" />-->
+		</center>
+		<footer></footer>
+	</body>	
+    <script type="text/javascript" src="js/mui.min.js"></script>    
+	<script type="text/javascript" src="js/mui.enterfocus.js"></script>
+	<script type="text/javascript" src="js/applogin.js" ></script>  
+	<script src="js/test.js" type="text/javascript"></script>
+	<script src="js/main.js" type="text/javascript"></script>
+	<script src="js/jquery.js" type="text/javascript"></script>
+	<script src="js/common.js" type="text/javascript"></script>
+	<script src="js/mui.picker.min.js" type="text/javascript"></script>
+	<script type="text/javascript" src="js/applogin.js" ></script>
+	<script src="js/main.js" type="text/javascript"></script>
+	<script src="js/jquery.js" type="text/javascript"></script>
+    <script type="text/javascript">    	
+    	/*mui.init();
+		var mask=mui.createMask(function(){//遮罩层callback事件
+			return true;//返回true关闭mask
+		});
+		mui.plusReady(function(){
+			plus.plugintest.PluginTestTyrz(["Html5"],
+				function(result) {
+					var Test = plus.android.importClass("reno.Beam.MyData");
+				var data=plus.android.getAttribute(test,"jwd");
+				var loglat = data.split(",");
+				console.log(data);
+				checkUser(data);
+				},function(result){mui.alert(result);});
+		});*/
+		function checkUser(){
+			/*var accountBox = data;
+			if(accountBox=="认证失败"){
+				mui.alert("认证失败");
+		    }else if(accountBox=="该用户没有权限"){
+		    	mui.alert("该用户没有权限");
+		    }else{*/
+			/*var clientid = plus.push.getClientInfo().clientid;*/
+				/*mask.show();//显示遮罩层*/
+				mui.ajax(base_url+"login/check/user?guid="+new Date().getTime(),{
+					headers:{
+						'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
+						,'user_id_token':app.getUser().userid
+						,'urlName':"统一认证访问接口"
+					},
+					data:{
+						'account':"612701198403110033" 
+						/*'password': passwordBox.value,
+						'deviceId' : clientid*/
+					},
+					dataType:'json',//服务器返回json格式数据
+					type:'post',//HTTP请求类型
+					cache: true,
+					async: true,
+					timeout:10000,//超时时间设置为10秒；
+					beforeSend:function(){  
+						//触发ajax请求开始时执行
+						console.log('登录中...');
+		            },
+					success:function(data){
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						if(data.code=='200'){
+							plus.nativeUI.toast('认证成功！');
+							console.log(JSON.stringify(data.data));
+							app.setUser(data.data.account,data.data.username,data.data.id);//保存用户信息
+	//								myback(plus.runtime.appid,false);
+							mui.openWindow({
+							    url:'index.html',
+							    id:'index.html'
+							});
+							/*mask.close();//关闭遮罩层*/
+						}else{
+							plus.nativeUI.toast('tish:'+data.message);
+							plus.nativeUI.closeWaiting();
+							/*mask.close();//关闭遮罩层*/
+						}
+						console.log(JSON.stringify(data));
+					},
+					error:function(xhr,type,errorThrown){
+						//异常处理；
+						mui.alert("网络错误");
+						console.log(JSON.stringify(xhr)+type+errorThrown);
+					},
+					complete: function(msg){
+							//ajax请求完成时执行
+					}
+				});
+	    }
+        /*(function($, doc) {
+			$.init({
+				statusBarBackground: '#f7f7f7'
+			});
+			var mask=mui.createMask(function(){//遮罩层callback事件
+				return true;//返回true关闭mask
+			});
+			$.plusReady(function() {
+				plus.screen.lockOrientation("portrait-primary");
+				var settings = app.getSettings();
+				var state = app.getState();
+			
+				// close splash
+				setTimeout(function() {
+					//关闭 splash
+					plus.navigator.closeSplashscreen();
+				}, 600);
+				//检查 "登录状态/锁屏状态" 结束
+				var loginButton = doc.getElementById('login');
+				var accountBox = doc.getElementById('account');
+				var passwordBox = doc.getElementById('password');
+				//var autoLoginButton = doc.getElementById("autoLogin");
+				var regButton = doc.getElementById('reg');
+				var forgetButton = doc.getElementById('forgetPassword');
+				//监听输入框控制登录按钮是否可用
+				document.getElementById("password").addEventListener('input',function(){
+					if (accountBox.value.length > 3 && passwordBox.value.length >= 4) {
+						document.getElementById("login").disabled=false;
+					}else{							
+						document.getElementById("login").disabled=true;
+					}
+				});
+				document.getElementById("account").addEventListener('input',function(){
+					if (accountBox.value.length > 3 && passwordBox.value.length >= 4) {
+						document.getElementById("login").disabled=false;
+					}else{							
+						document.getElementById("login").disabled=true;
+					}
+				});
+				if (accountBox.value.length > 3 && passwordBox.value.length >= 4) {
+					document.getElementById("login").disabled=false;
+				}else{							
+					document.getElementById("login").disabled=true;
+				}
+				loginButton.addEventListener('tap', function(event) {
+					if (accountBox.value.length < 3) {
+						plus.nativeUI.toast('账号最短为 5 个字符');
+						return;
+					}
+					if (passwordBox.value.length < 3) {
+						plus.nativeUI.toast('密码最短为 6 个字符');
+						return; 
+					}
+					var clientid = plus.push.getClientInfo().clientid;
+//					plus.nativeUI.showWaiting('登陆中……');
+					mask.show();//显示遮罩层
+					mui.ajax(base_url+"login/check/user?guid="+new Date().getTime(),{
+						data:{
+							'account': accountBox.value,
+							'password': passwordBox.value,
+							'deviceId' : clientid
+						},
+						dataType:'json',//服务器返回json格式数据
+						type:'post',//HTTP请求类型
+						cache: true,
+						async: true,
+						timeout:10000,//超时时间设置为10秒；
+						beforeSend:function(){  
+							//触发ajax请求开始时执行
+							console.log('登录中...');
+			            },
+						success:function(data){
+							//服务器返回响应，根据响应结果，分析是否登录成功；
+							if(data.code=='200'){*/
+								/*plus.nativeUI.toast('登录成功！');*/
+								/*console.log(JSON.stringify(data.data));
+								app.setUser(data.data.account,data.data.username,data.data.id);//保存用户信息
+	//								myback(plus.runtime.appid,false);
+								mui.openWindow({
+								    url:'index.html',
+								    id:'index.html'
+								});
+								mask.close();//关闭遮罩层
+							}else{
+								plus.nativeUI.toast('tish:'+data.message);
+								plus.nativeUI.closeWaiting();
+								mask.close();//关闭遮罩层
+							}
+							console.log(JSON.stringify(data));
+						},
+						error:function(xhr,type,errorThrown){
+							//异常处理；
+							mui.alert("网络错误");
+							console.log(JSON.stringify(xhr)+type+errorThrown);
+						},
+						complete: function(msg){
+								//ajax请求完成时执行
+						}
+					});
+				});
+				
+				$.enterfocus('#login-form input', function() {
+					$.trigger(loginButton, 'tap');
+				});
+				// 
+				window.addEventListener('resize', function() {
+					//var oauthArea = doc.querySelector('.oauth-area');
+					//oauthArea.style.display = document.body.clientHeight > 400 ? 'block' : 'none';
+				}, false);
+				
+				mui.back=function () { var btnArray = ['是', '否']; mui.confirm('是否退出应用', '榆林市公安局', btnArray, function(e) { if (e.index == 0) { plus.runtime.quit(); } }) }
+			});
+		}(mui, document));
+		$(".togglePwd").click(function(){
+			$(this).toggleClass("showPwd");
+			if ($(this).hasClass("showPwd")) {
+            	$("#password").attr("type", "text")
+	        }else {
+	            $("#password").attr("type", "password")
+	        }
+		});*/
+    </script>
+</html>

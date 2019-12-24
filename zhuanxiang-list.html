@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>专项数据采集</title>		
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/app.css">
+		<style type="text/css">
+			h4{font-weight: normal;color: #333;font-size: 1rem;padding-bottom: .325rem;}
+			.mui-f-right{font-weight: normal;color: #555;}
+			.mui-navigate-right:after {top: 40px;color: #888;}
+		</style>
+	</head>
+	<body class="mui-plus mui-statusbar mui-statusbar-offset">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">专项数据采集</h1>
+		</header>
+		<div class="mui-content">
+			<!--<h5 class="mui-content-padded">人口信息盘查</h5>-->
+			<div id="questionList"></div>
+		</div>
+	</body>
+	<!--自定义采集入口-->
+	<script id="questionTempl" type="text/html">
+		<!--循环菜单容器项--> 
+		{{each newMenuList menuList}}
+		<div class="mui-slider-item">
+			<ul class="mui-table-view">
+			<!--循环菜单项-->
+			{{each menuList muenItem}}
+				{{if muenItem.is_top=="0"}}
+				<li class="mui-table-view-cell mui-media">
+					<a href="form-data-list.html" class="mui-navigate-right" data-id = "{{muenItem.id}}" data-tableName= "{{muenItem.tableName}}" data-tableComment= "{{muenItem.tableComment}}">
+						<span class="iconfont icon-{{muenItem.tableName}} mui-media-object mui-pull-left" style="max-width: 70px;font-size: 40px;"></span>
+						<div class="mui-media-body">
+							{{muenItem.tableComment}}信息盘查
+							<p class='mui-ellipsis' style="padding-top: 15px;">市局要求对{{muenItem.tableComment}}进行详细信息采集</p>
+						</div>
+					</a>
+				</li>
+				{{/if}}
+			{{/each}}
+			</ul>
+		</div>
+		{{/each}}
+	</script>
+	<script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+	<script type="text/javascript" src="js/template-web.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/applogin.js"></script>
+	<script type="text/javascript" src="js/watermark.js"></script>
+    <script type="text/javascript">
+    	
+		var mask=mui.createMask(function(){//遮罩层callback事件
+			return true;//返回true关闭mask
+		});
+		
+		mui.plusReady(function(){
+//			mui.ajax(base_url+'/base/tables?guid='+new Date().getTime(),{
+//				data:{
+//					
+//				},
+			mui.ajax(base_url+'/base/tables?guid='+new Date().getTime(),{
+				dataType:'json',//服务器返回json格式数据
+				type:'get',//HTTP请求类型
+				timeout:10000,//超时时间设置为10秒
+				headers:{
+					'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
+					,'user_id_token':app.getUser().userid				
+				},
+				beforeSend: function() {
+//					plus.nativeUI.showWaiting('正在加载');
+					mask.show();//显示遮罩层
+				},
+				complete: function() {
+//					plus.nativeUI.closeWaiting();
+					mask.close();//关闭遮罩层
+				},				
+				success:function(data){
+					//console.log(JSON.stringify(data));
+					//将返回的菜单对象转为数组，每组展示9条，封装成新的数组对象newObjMuenList
+					var newArrayMenuList = [];
+//					var newObjMuenList = data.newObjMuenList;	
+					var newObjMuenList = {};
+					for(var i=0;i<data.data.muenList.length;i+=9){
+						newArrayMenuList.push(data.data.muenList.slice(i,i+9));
+					} 
+					newObjMuenList.newMenuList=newArrayMenuList;
+					console.log(newObjMuenList.newMenuList.length);
+					console.log(JSON.stringify(data.newObjMuenList));
+					 
+					//将封装后的新的对象赋给模板menuListTempl
+					var questionHtml=template('questionTempl',newObjMuenList);
+					$("#questionList").html(questionHtml);
+					
+				},
+				error:function(xhr,type,errorThrown){
+					//异常处理；
+					console.log(type)
+				}
+			});
+			//主列表点击事件
+			mui('.mui-content').on('tap', 'a', function() {
+				var href = this.getAttribute('href');
+				
+				//非plus环境，直接走href跳转
+				if(!mui.os.plus) {
+					location.href = href;
+					return;
+				}
+				//打开新窗口
+				var id = this.getAttribute("data-wid");
+				if(!id) {
+					id = href;
+				}
+				if(href && ~href.indexOf('.html')) {
+					//打开窗口的相关参数
+					var options = {
+						styles:{
+							popGesture: "close"
+						},
+						extras:{
+							"tableId":this.getAttribute("data-id"),
+							"tableName":this.getAttribute("data-tableName"),
+							"tableComment":this.getAttribute("data-tableComment")
+						}
+					};
+					mui.openWindow(href,id,options);
+				}
+			});
+		});
+    </script>
+	
+</html>

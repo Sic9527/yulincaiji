@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>数据补录</title>		
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/app.css">
+		<style type="text/css">
+			h4{font-weight: normal;color: #333;font-size: 1rem;padding-bottom: .325rem;}
+			.mui-f-right{font-weight: normal;color: #555;}
+		</style>
+	</head>
+	<body class="mui-plus mui-statusbar mui-statusbar-offset">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">数据补录</h1>
+		</header>
+		<div class="mui-content">
+			<!--<h5 class="mui-content-padded">人口信息盘查</h5>-->
+			<ul id="message_push" class="mui-table-view view-no-bor"></ul>
+		</div>
+	</body>
+	<!--自定义采集入口-->
+	<script id="messagePushTempl" type="text/html">
+		{{each data messagePush}}
+			<li class="mui-table-view-cell view-cell-no-bor">
+				<a class="mui-navigate-right" href="push-index.html" data-mpId="{{messagePush.id}}"> 
+					<!--<span class="mui-badge">{{messagePush.createTime}}</span>--> 
+					<i class="iconfont icon-arrRight-fill"></i>{{messagePush.name}} 
+				</a>
+			</li>
+		{{/each}}
+	</script>
+	<script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+	<script type="text/javascript" src="js/template-web.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/applogin.js"></script>
+	<script src="js/watermark.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    	
+		var mask=mui.createMask(function(){//遮罩层callback事件
+			return true;//返回true关闭mask
+		});
+		
+		mui.plusReady(function(){
+			mui.ajax(base_url+'/base/getPushMessage?guid='+new Date().getTime(), {
+//			mui.ajax("js/test.json",{
+				headers:{
+					'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
+					,'user_id_token':app.getUser().userid				
+				},
+				dataType:'json',//服务器返回json格式数据
+				type:'get',//HTTP请求类型
+				timeout:10000,//超时时间设置为10秒
+				headers:{
+					'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
+				}, 
+				beforeSend: function() {
+					plus.nativeUI.showWaiting('正在加载');
+					mask.show();//显示遮罩层
+				},
+				complete: function() {
+					plus.nativeUI.closeWaiting();
+					mask.close();//关闭遮罩层
+				},				
+				success:function(data){
+					var htmlPush = template('messagePushTempl', data);
+					$('#message_push').html(htmlPush);
+				},
+				error:function(xhr,type,errorThrown){
+					//异常处理；
+					console.log(type)
+				}
+			});
+			mui('.mui-content').on('tap', 'a', function() {
+				var href = this.getAttribute('href');
+				
+				//非plus环境，直接走href跳转
+				if(!mui.os.plus) {
+					location.href = href;
+					return;
+				}
+				//打开新窗口
+				var id = this.getAttribute("data-wid");
+				if(!id) {
+					id = href;
+				}
+				if(href && ~href.indexOf('.html')) {
+					//打开窗口的相关参数
+					var options = {
+						styles:{
+							popGesture: "close"
+						},
+						extras:{
+							"tableId":this.getAttribute("data-id"),
+							"tableName":this.getAttribute("data-tableName"),
+							"tableComment":this.getAttribute("data-tableComment"),
+							"mpId":this.getAttribute("data-mpId")
+						}
+					};
+					mui.openWindow(href,id,options);
+				}
+			});
+		});
+    </script>
+	
+</html>

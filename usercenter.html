@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>个人中心</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/app.css">
+		<style type="text/css">			
+			.mui-table-view-cell{font-size: 0.875rem;}
+		</style>
+	</head>
+	<body class="mui-plus mui-statusbar mui-statusbar-offset">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">个人中心</h1>
+			<!--<a class="mui-icon mui-icon-bars mui-pull-right"></a>-->
+		</header>
+		<div class="mui-content">
+			<ul class="mui-table-view" style="margin-top:1.625rem">
+				<li class="mui-table-view-cell">
+					<a>姓名<span class="mui-pull-right" id="name_val_d">**</span></a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a>身份账号<span class="mui-pull-right" id="account_val_d">**</span></a>
+				</li>
+			</ul>
+			<ul class="mui-table-view" style="margin-top: 1rem;">
+				<li class="mui-table-view-cell">
+					<a>警员编号<span class="mui-pull-right" id="idnumber_val"></span></a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a>所属机关<span class="mui-pull-right" id="subordinateorgan_val">榆林市局</span></a>
+				</li>
+			</ul>
+			
+			<ul class="mui-table-view" style="margin-top: 1rem;">
+				<li class="mui-table-view-cell" style="text-align: center;">
+					<a id="login-out">退出登录</a>
+				</li>
+			</ul>
+		</div>
+	</body>	
+	
+	<script src="js/mui.min.js" type="text/javascript"></script>
+	<script src="js/main.js" type="text/javascript"></script>
+	<script type="text/javascript" src="js/applogin.js" ></script>	
+	<script src="js/watermark.js" type="text/javascript"></script>
+	<script>
+		mui.init();
+		(function($) {
+			if(app.checkUser()){
+				mui.post(base_url+"userDetail/usercenter?guid="+new Date().getTime(),{"id":app.getUser().userid},function(data){
+					if(data.code=='200'){
+						console.log(JSON.stringify(data));
+						data = data.data;
+						if(data.photoUrl != undefined && data.photoUrl!=''){
+							document.getElementById('head-img1').src = smallUploadPath + data.photoUrl ;
+						}
+						if(data.name == undefined || data.name == ''){
+							document.getElementById('name_val_d').innerHTML = '未填写' ;
+						}else{
+							document.getElementById('name_val_d').innerHTML = data.name ;
+						}
+						document.getElementById('account_val_d').innerHTML = data.idnumber ;
+						document.getElementById('idnumber_val').innerHTML = data.policenumber ;
+						/*setTimeout(function() {
+							initImgPreview();
+						}, 300);*/
+					}else{ 
+						mui.alert(data.message);
+					}
+				});
+				
+			}
+			
+		})(mui);
+		
+		//退出登录
+		document.getElementById("login-out").addEventListener('tap', function() {
+			app.removeUser();
+			mui.openWindow({
+			    url:'login.html',
+			    id:'login.html'
+			});
+//			mui.get(base_url+"/login-out.action?guid="+new Date().getTime(),
+//				function(date){
+//					plus.nativeUI.toast("退出成功!");
+//					mui.back();
+//				}
+//			);
+		});
+	</script>
+
+</html>

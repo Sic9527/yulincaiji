@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>采集量排名</title>
+		<script src="js/mui.min.js"></script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/app.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/mui.picker.min.css" />
+		<link href="css/mui.picker.css" rel="stylesheet" />
+		<link href="css/mui.poppicker.css" rel="stylesheet" />
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+		</script>
+		<style type="text/css">
+			.title_hea{background: #108FCF;color: #FFFFFF;text-align: left;padding: 8px 10px;border-radius: 5px 5px 0 0 ;}
+			.rank-tit{text-align: center;}
+			div b{font-size: 1.625rem;color: #f00;}
+			.font_b{font-size: 1.225rem;color: #08c;}
+			.font_c{font-size: 1.225rem;color: #f90;}
+		</style>
+	</head>
+
+	<body class="mui-plus mui-statusbar mui-statusbar-offset">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">采集量排名</h1>
+		</header>
+		<div class="warp-cont">
+			<div class="rank-list">
+				<div class="title_hea">辖区排名</div>
+				<div class="rank-tit">
+					<div>辖区 <b id="x_all_person">*</b>人参与排名</div>
+				</div>
+				<div class="rank-lt">
+					<div>所在辖区7日排名<span class="mui-pull-right font_b" id="x_qi_rank">*</span></div>
+					<div class="rank-line">|</div>
+					<div>所在辖区总排名<span class="mui-pull-right font_b"  id="x_all_rank">*</span></div>
+				</div>
+			</div>
+			<div class="rank-list" >
+				<div class="title_hea" style="background: #F0AD4E;">全市排名</div>
+				<div class="rank-tit">
+					<div>全市<b id="q_all_person">*</b>人参加排名</div>
+				</div>
+				<div class="rank-lt">
+					<div>全市7日排名<span class="mui-pull-right font_c" id="q_qi_rank">*</span></div>
+					<div class="rank-line">|</div>
+					<div>全市总排名<span class="mui-pull-right font_c" id="q_all_rank">*</span></div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/mui.view.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="js/applogin.js" ></script>
+<script src="js/watermark.js" type="text/javascript"></script>
+<script type="text/javascript">
+	mui.init();
+	//排名接口
+	mui.post(base_url+"userDetail/rankinguser?guid="+new Date().getTime(),{
+		"id":app.getUser().userid
+	},function(data){
+			console.log(JSON.stringify(data));
+		if(data.code=='200'){
+//			console.log(JSON.stringify(data));
+			data = data.data;
+			document.getElementById('x_all_person').innerHTML = data.xq.xqrs;//全市人数
+			
+			document.getElementById('x_all_rank').innerHTML = data.xq.finalDays;
+			document.getElementById('x_qi_rank').innerHTML = data.xq.sevenDays;
+			
+			document.getElementById('q_all_person').innerHTML = data.qs.qsrs;//辖区人数
+			
+			document.getElementById('q_all_rank').innerHTML = data.qs.finalDays;
+			document.getElementById('q_qi_rank').innerHTML = data.qs.sevenDays;
+			/*setTimeout(function() {
+				initImgPreview();
+			}, 300);*/
+		}else{ 
+			mui.alert(data.message);
+		}
+	});
+</script>

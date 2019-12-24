@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title></title>		
+		<link rel="stylesheet" type="text/css" href="css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="css/app.css">		
+		<link rel="stylesheet" type="text/css" href="css/mui.picker.min.css" />
+		<style type="text/css">
+			.p_time{font-size: .875rem;}
+			.p_content{line-height: 1.5;color: #555;}
+			.head-img {position: absolute;right: 1.825rem;width: 2.225rem;height: 2.225rem;bottom: 0.525rem;}
+			.errorTips {border: 1px solid #f00;}
+			.mui-input-group .mui-input-row em{position: absolute;right: 0.525rem;top: 35%;}
+			.error,.icon-bitian{color: #f00;}
+			.flow_person{position: relative;height: 5.425rem;}
+			.mui-input-group .mui-input-row{height: auto !important;padding: 3px 0;}
+			.mui-bar-nav~.mui-content .mui-slider.mui-fullscreen{top:0px;padding: .625rem;margin-left: 10px;float: right;}
+			.flow_person .mui-segmented-control.mui-scroll-wrapper{height: 4.625rem;}
+			.flow_person .mui-segmented-control.mui-scroll-wrapper .mui-scroll{height: 4.25rem;}
+			.flow_person .mui-segmented-control.mui-scroll-wrapper .mui-control-item.flow_add{height: 4.25rem;width: 4.25rem;border-radius: 10px;line-height:4.25rem;border: 1px solid #ccc;color: #ccc;display: inline-block;text-align: center;margin-left: .825rem;}
+			.flow_person .flow_add i{ font-size: 60px; font-style: normal;line-height: 3.4rem;}
+			.mui-segmented-control.mui-scroll-wrapper .mui-control-item{height: 4rem; width: 4rem;padding: .325rem;}
+			.mui-input-row label~.list-cell-fr{height: 3.325rem;}
+			.header,.mui-bar-footer{background:none;opacity: inherit;}
+			.mui-bar-footer{width: 100%;padding-left: 0;padding-right: 0;}
+			.mui-bar-footer button{padding: .625rem 0;}
+			#showTemplForm{
+				width:100%;
+				height: 100%;
+			}
+			#showTempl{position:relative;width:100%;overflow-y: auto;padding-bottom: 60px;}
+			.partOne{    
+				position: relative;
+			    height: auto;
+			    margin: 0 auto 0;
+			    padding-bottom: 5px;
+			}
+			.partOne:before,.mui-input-group .mui-input-row:after,.mui-input-group:after{
+				background: none!important;
+			}
+			.partName{
+				color: #000;
+			    width: 135px;
+			    height: 48px;
+			    line-height: 48px;
+			    margin: 0 auto;
+			    background: #5dffff;
+			    text-align: center;
+			    position: relative;
+				top: 23px;
+				z-index: 1;
+			}
+			.mui-input-group{background: #FFFFFF;padding: 10px 8px 20px 1px;}
+			
+			.mui-input-row{position: relative;}
+			.partOne .mui-input-row label{width: 30%;color:#333;box-sizing:border-box;text-align: right;padding: 0px;font-size: 14px;margin-top: 14px;}
+			.mui-input-row label~input{font-size: 14px;}
+			.partOne .mui-input-row input,.mui-input-row label~.list-cell-fr{width: 69%;}
+			select{background: none!important;}
+			.borTop,.borBottom,.center_con{
+				width: 100%;display: block;background-size: contain;
+			}
+			
+			.headBg{background: #1a9bee;}
+			.mui-bar .mui-btn-block,.mui-bar-footer{border: none;box-shadow:none;}
+			.partOne .mui-input-row .mui-navigate-right input{width: 100%;}
+			.btn_spac{border: none; background: url('img/btn_spa.png'); background-repeat: no-repeat !important;background-position: 0em top !important;width: 100%;height: 3rem;background-size: 100% !important;}
+			.zhhc{margin-left: 1rem;}
+			.mui-bar-footer{padding:0.3rem 0.5rem;height: 50px;}
+			.mui-bar .mui-btn-block{padding: 0.5rem 0;top: 0px;}
+			.mui-input-row label~input{color: #333333 !important;}
+		</style>
+	</head>
+	<body class="mui-plus mui-statusbar mui-statusbar-offset">
+		<header id="header" class="mui-bar mui-bar-nav header" style="box-shadow:none;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">**</h1>
+			<!--<a class="mui-icon mui-icon-bars mui-pull-right"></a>-->
+		</header>
+		<!--<img src="img/lrListBg.jpg" style="width:100%;height: 100%;position: fixed;z-index: -1;"/>-->
+		<form class="mui-content" id="showTemplForm" >
+			<!--<div class="main_bg" style="overflow-y: auto;">-->
+			<!--重点人员核查-->
+			<div class="zhhc">
+				
+			</div>
+			<div id="showTempl" ></div>
+			<!--</div>-->
+			
+			<footer class="mui-bar mui-bar-footer">
+				<button type="button" id="submitBtn" class="mui-btn mui-btn-block mui-btn-primary" data-loading-text="提交中" onclick="submitForm();" >提交信息</button>
+			</footer>
+		</form>
+
+		<script id="recordDetail" type="text/html">
+			<div class="mui-input-group input-text-right partOne">
+				{{each data record}}
+					{{each record.columns column}}
+						<div class="mui-input-row" >
+							<label for="zlrname" data-labelName = '{{record.columnKV[column]}}'>{{record.columnKV[column]}}：</label>
+							<input type="text" class="mui-input-clear" name = '{{column}}' value="{{record.records[0][column]}}"  placeholder="请输入{{record.columnKV[column]}}"  />
+						</div>
+					{{/each}}
+				{{/each}}
+			</div>
+	</script>
+		<input type="hidden" id="tableName_val" name="tableName" />
+		<input type="hidden" id="mpId" name="mpId" />
+		<input type="hidden" id="tableId" name="tableId" />
+	</body>
+    <script src="js/mui.min.js" type="text/javascript"></script>
+    <script src="js/template-web.js" type="text/javascript"></script>
+	<script src="js/main.js" type="text/javascript"></script>
+	<script src="js/jquery.js" type="text/javascript"></script>
+	<script src="js/verification.js" type="text/javascript"></script>
+	<script src="js/common.js" type="text/javascript"></script>
+	<script src="js/mui.picker.min.js" type="text/javascript"></script>
+	<script src="js/applogin.js" type="text/javascript"></script>
+	<script src="js/watermark.js" type="text/javascript"></script>
+	
+  <script type="text/javascript">
+		mui.init({
+			beforeback: function() {
+		　　　　 //获得父页面的webview
+				var list = plus.webview.currentWebview().opener();
+		　　　　 //触发父页面的自定义事件(refresh),从而进行刷新
+				mui.fire(list, 'refresh');
+				//返回true,继续页面关闭逻辑
+				return true;
+			}
+		});
+    	var self;
+    	var mask=mui.createMask(function(){//遮罩层callback事件
+			return true;//返回true关闭mask
+		});
+		mui.plusReady(function(){
+			
+			//获取上一WebView窗口
+			self = plus.webview.currentWebview();
+			
+			//动态改变header标题内容
+			document.querySelector(".mui-title").innerHTML=self.tableComment;
+			
+			//得到上一WebView传递的tableName参数，用于传递给服务器获取请求Clom字段
+			$('#tableName_val').val(self.tableName);
+			$('#tableId').val(self.tableId);
+			var mpId = self.mpId;//获取messagePush的id
+//			console.log(base_url+'base/table/'+self.tableId+self.tableName); 
+			console.log('mpId', self.mpId)
+			$('#mpId').val(self.mpId);
+			//根据表ID获取展示字段
+			mui.ajax(base_url+'base/getQuestionRecord?guid='+new Date().getTime(),{
+//			mui.ajax('js/test.json',{
+				headers:{
+					'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
+					,'user_id_token':app.getUser().userid				
+				},
+				data:{"tableId": self.tableId, "recordId": self.recordId},
+				dataType:'json',//服务器返回json格式数据
+				type:'get',//HTTP请求类型
+				timeout:10000,//超时时间设置为10秒；	
+				beforeSend: function() {
+					plus.nativeUI.showWaiting('正在加载');
+					mask.show();//显示遮罩层
+				},
+				complete: function() {
+					plus.nativeUI.closeWaiting();
+					mask.close();//关闭遮罩层
+				},				
+				success:function(result){
+					if (result.message == "opened") {
+						mui.toast("该条记录正在被其他人采集");
+						mui.back();
+						return;
+					}
+//					result = result.quTable;
+					console.log(JSON.stringify(result));
+					var html = template('recordDetail', result);
+					$("#showTempl").html(html);
+//					console.log(html);
+				},
+				error:function(xhr,type,errorThrown){
+	//				异常处理；
+					console.log(type);
+				}
+			});
+			//打开相机功能，拿到照片的路径		
+			// 拍照获取图片
+			function getImage(obj) {
+			    var c = plus.camera.getCamera();
+			    c.captureImage(function(e) {
+			        plus.io.resolveLocalFileSystemURL(e, function(entry) {
+			        	var imgSrc = entry.toLocalURL() + "?version=" + new Date().getTime(); //拿到图片路径
+			            // 其他操作,比如预览展示
+			 			console.log('getImage',imgSrc+obj);
+			 			$(obj).find('img.mui-action-preview').attr('src',imgSrc);
+			 			upload(obj);//上传服务器
+			        }, function(e) {
+			            console.log("读取拍照文件错误：" + e.message);
+			        });
+			    }, function(s) {
+			        console.log("error" + s);
+			    }, {
+			        filename: "_doc/camera/"
+			    })
+			}
+			//打开手机相册
+			// 从相册中选择图片 
+			function galleryImg(obj){
+				// 从相册中选择图片gallery
+			    plus.gallery.pick( function(e){
+			    	for(var i in e.files){
+				    	var fileSrc = e.files[i];
+			            // 其他操作,比如预览展示
+//			 			console.log('galleryImg',fileSrc+$(obj).html());
+			 			$(obj).find('img.mui-action-preview').attr('src',fileSrc);
+			 			upload(obj);//上传服务器
+			    	}
+			    }, function ( e ) {
+			    	console.log( "取消选择图片" );
+			    },{
+			    	filter: "image",
+			    	multiple: true,
+			    	maximum: 1,
+			    	system: false,
+			    	onmaxed: function() {
+			    		plus.nativeUI.alert('最多只能选择1张图片');
+			    	}
+			    });
+			}
+			//上传到服务器方法
+			 //服务端接口路径
+            var server = base_url+self.tableName+'/image';
+            // 上传文件
+            function upload(obj){
+            	console.log('server:'+server);
+				//获取图片元素
+				var imgsArr = $(obj).find('img.mui-action-preview');
+				mui.each(imgsArr, function(index, item){
+					console.log(index);
+					console.log(item.src);
+					createUp(item);
+				});
+				function createUp (files) {					
+					var task = plus.uploader.createUpload(server,
+					{method:"POST"},
+					function(t,status){ //上传完成
+						console.log('status:'+JSON.stringify(status));
+						if(status==200){
+							console.log("上传成功："+t.responseText);
+						}else{
+							console.log("上传失败："+status);
+						}
+					});
+					//添加其他参数
+					//task.addData("name","test");
+					// 页面中要上传的 图片路径
+					task.addFile(files.src,{key:'file'});
+					task.start();
+				}
+			}
+			
+			window.addEventListener('doMainId', function(e){
+	        　    //获取参数值
+				var mainId = e.detail.mainId;
+				$('#id').val(mainId);
+				console.log(mainId);
+	        });
+		});
+		
+//		console.log('tableName:'+self.tableName+self.tableId);
+    	var mask=mui.createMask(function(){//遮罩层callback事件
+			return true;//返回true关闭mask
+		});
+		
+		/*
+		 * 判断当scrollTop大于某个值时，头部增加背景色
+		 * */
+		$(window).scroll(function(){
+	        if ($(this).scrollTop() > 20) {
+	            $(".header").addClass("headBg");
+	        }else{
+	            $(".header").removeClass("headBg");
+	        }
+    	});
+		function handle_nfc_data1(){
+				NdefRecord = plus.android.importClass("android.nfc.NdefRecord");
+				NdefMessage = plus.android.importClass("android.nfc.NdefMessage");
+				var main = plus.android.runtimeMainActivity();
+				var intent = main.getIntent();
+				console.log("action type:" + intent.getAction());
+				if("android.nfc.action.TECH_DISCOVERED" == intent.getAction()){
+						if(readyWriteData){
+								__write(intent);
+								readyWriteData = false;
+						}else if(readyRead){
+								__read(intent);
+								readyRead = false;
+						}
+				}
+		}
+		function showToast(msg){
+				plus.nativeUI.toast(msg);
+		}
+		
+		//表单提交
+		function submitForm() {
+			var data = "";
+			mui("input").each(function() {
+				data += this.name + "=" + this.value + "&";
+			})
+			data = data.substr(0, data.length-1);
+			console.log(data);
+			$.ajax({
+				url: base_url+'base/updateQuTable',
+				data: data,
+				type: 'post',
+				success: function(result) {
+					if (result.message == "success") {
+						mui.toast("保存成功");
+						mui.back();
+					} else {
+						mui.toast("保存失败");
+					}
+				},
+				error:function(xhr,type,errorThrown){
+					console.log(type);
+					mui.toast("出现错误");
+				}
+			});
+		}
+   </script>
+</html>
