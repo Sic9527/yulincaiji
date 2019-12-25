@@ -62,14 +62,14 @@
 	mui.init();
 	//排名接口
 	function cjlpm(){
-		mui.ajax(base_url+"userDetail/rankinguser?guid="+new Date().getTime(),{
+		mui.ajax(base_url+"phone/userDetail/rankinguser?guid="+new Date().getTime(),{
 			dataType:'json',//服务器返回json格式数据
 			type:'post',//HTTP请求类型
 			timeout:10000,//超时时间设置为10秒
 			headers:{
 				'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
 				,'user_id_token':app.getUser().userid
-				,'urlName':"采集量排名"
+				,'id':"14"
 			},
 			data:{
 				"id":app.getUser().userid

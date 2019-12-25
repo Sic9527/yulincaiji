@@ -319,7 +319,7 @@
 				headers:{
 					'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
 					,'user_id_token':app.getUser().userid
-					,'urlName':"同行同住字段获取"
+					,'id':"9"
 				},
 				dataType:'json',//服务器返回json格式数据
 				type:'get',//HTTP请求类型
@@ -584,7 +584,7 @@
 					headers:{
 						'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
 						,'user_id_token':app.getUser().userid	
-						,'urlName':"同行同住信息采集提交"
+						,'id':"11"
 					},
 					url:base_url+"/base/addMuti/"+self.tableName+'/'+self.relationTableName,
 					type:'post', 
@@ -646,7 +646,7 @@
 				headers:{
 					'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
 					,'user_id_token':app.getUser().userid	
-					,'urlName':"同行同住身份证照片获取"
+					,'id':"21"
 				},
 				data:{
 					"idCard":idcardVal
@@ -670,11 +670,11 @@
 				}
 			});
 			//测试完成后启用该地址
-			mui.ajax(base_url_pc+"postgresql/finByIdcardPersonInfo?guid="+new Date().getTime(),{
+			mui.ajax(base_url_pc+"phone/postgresql/finByIdcardPersonInfo?guid="+new Date().getTime(),{
 				headers:{
 					'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
 					,'user_id_token':app.getUser().userid	
-					,'urlName':"同行同住人员核查"
+					,'id':"12"
 				},
 				data:{
 					"idCard":idcardVal
