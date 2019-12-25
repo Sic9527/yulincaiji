@@ -33,7 +33,7 @@ function dataPersonCar(tableId,tableName,formType){
 		headers:{
 			'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
 			,'user_id_token':app.getUser().userid		
-			,'urlName':"采集信息页面数据获取"
+			,'id':"3"
 		},
 		dataType:'json',//服务器返回json格式数据
 		type:'get',//HTTP请求类型
@@ -439,7 +439,7 @@ function findByCardIdPerson(idcardVal){
 		headers:{
 			'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
 			,'user_id_token':app.getUser().userid		
-			,'urlName':"身份证照片获取"
+			,'id':"4"
 		},
 		data:{
 			"idCard":idcardVal
@@ -469,7 +469,7 @@ function findByCardIdPerson(idcardVal){
 		headers:{
 			'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
 			,'user_id_token':app.getUser().userid	
-			,'urlName':"人员核查"
+			,'id':"5"
 		},
 		data:{
 			"idCard":idcardVal
@@ -635,7 +635,7 @@ function carCplxdm(_attr){
 			headers:{
 				'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
 				,'user_id_token':app.getUser().userid	
-				,'urlName':"车辆类型核查"
+				,'id':"6"
 			},
 			data:{
 				"carNumber":_attr
@@ -703,12 +703,12 @@ function carDetalis(select_val,carNumber){
 	if($.trim(carNumber).length == 0) { 
 		$(this).focus();
 	}else{	
-		mui.ajax(
+		mui.ajax(base_url_pc+"phone/postgresql/finByIdcardCarInfo?guid="+new Date().getTime()
 			,{
 			headers:{
 				'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
 				,'user_id_token':app.getUser().userid
-				,'urlName':"车辆核查"
+				,'id':"7"
 			},	
 			data:{
 				"carNumber":carNumber,
@@ -1096,7 +1096,43 @@ function upload(obj){
 		createUp(imgsArr.prevObject[0]);
 /*	});*/
 	function createUp (files) {
-		var task = plus.uploader.createUpload(server,
+		mui.ajax(server,{
+			headers:{
+				'Content-Type':'application/x-www-form-urlencoded' //此处如果使用application/json 会遇到post发送参数失败的问题
+				,'user_id_token':app.getUser().userid
+				,'id':"8"
+			},
+			data:{
+				'files':files 
+			},
+			dataType:'json',//服务器返回json格式数据
+			type:'post',//HTTP请求类型
+			cache: true,
+			async: true,
+			timeout:10000,//超时时间设置为10秒；
+			beforeSend:function(){  
+				//触发ajax请求开始时执行
+				console.log('登录中...');
+            },
+			success:function(data){
+				if(status==200){
+					console.log("上传成功："+t.responseText);
+					var json_t =  JSON.parse(t.responseText);
+					for(var key in json_t){	
+						if(key=='data'){
+							if($('#photo_img_val').val() == ''){
+								$('#photo_img_val').val(json_t['data'])
+							}else{
+								$('#photo_img_val').val($('#photo_img_val').val()+json_t['data']);
+							}
+							
+						}
+					}
+				}else{
+					console.log("上传失败："+status);
+				}
+			}
+		/*var task = plus.uploader.createUpload(server,
 		{method:"POST"},
 		function(t,status){ //上传完成
 			
@@ -1116,7 +1152,7 @@ function upload(obj){
 							}
 			}else{
 				console.log("上传失败："+status);
-			}
+			}*/
 		});
 		//添加其他参数
 		//task.addData("name","test");
