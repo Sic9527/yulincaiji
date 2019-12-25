@@ -699,7 +699,6 @@ function carDetalis(select_val,carNumber){
 	console.log('*********车辆详细信息回填');
 	//重点人员核查findfugitive
 	console.log("carNumber:"+carNumber);
-	
 	if($.trim(carNumber).length == 0) { 
 		$(this).focus();
 	}else{	
